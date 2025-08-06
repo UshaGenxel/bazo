@@ -12,7 +12,7 @@
  * Enqueue the CSS files.
  *
  * @since 1.0.0
- *
+ * 
  * @return void
  */
 function bazo_styles() {
