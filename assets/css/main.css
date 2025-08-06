@@ -1,0 +1,165 @@
+/* Wrapper: Filter icon + filters popup */
+.wp-block-bazo-event-grid .bazo-event-filters-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filter-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filter-icon-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    gap: 10px;
+    width: 250px;
+    max-width: 90vw;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters.is-visible {
+    display: flex;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filter-button {
+    width: 100%;
+    justify-content: flex-start;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: capitalize;
+    color: #333;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filter-button.active {
+    background-color: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+/* Grid container (responsive) */
+.wp-block-bazo-event-grid .bazo-event-grid-container .bazo-event-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Default: 4 columns */
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 32px;
+}
+
+@media (max-width: 1200px) {
+    .wp-block-bazo-event-grid .bazo-event-grid-container .bazo-event-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+@media (max-width: 992px) {
+    .wp-block-bazo-event-grid .bazo-event-grid-container .bazo-event-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .wp-block-bazo-event-grid .bazo-event-grid-container .bazo-event-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Card styles */
+.bazo-event-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+}
+
+.bazo-event-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.bazo-event-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.bazo-event-card-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.bazo-event-card-content {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #333;
+}
+
+.bazo-event-card-content h3 {
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.bazo-event-card-date {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.bazo-event-card-excerpt {
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 8px;
+}
+
+/* Load more */
+.bazo-event-load-more {
+    text-align: center;
+    margin: 32px 0;
+}
+
+.bazo-load-more-button {
+    padding: 10px 32px;
+    border-radius: 24px;
+    background: #eee;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.bazo-load-more-button:hover {
+    background: #ddd;
+}

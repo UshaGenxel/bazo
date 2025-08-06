@@ -1,12 +1,50 @@
 .wp-block-bazo-event-grid {
-    .bazo-event-filters {
+    .bazo-event-filters-wrapper {
+        position: relative;
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .bazo-event-filter-icon-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
         margin-bottom: 20px;
-        justify-content: center;
+        color: #333;
+        
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .bazo-event-filters {
+        /* Default state: hidden */
+        display: none;
+        
+        /* Popup/Dropdown styling */
+        position: absolute;
+        top: 40px; /* Adjust based on icon size and spacing */
+        right: 0;
+        z-index: 10;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        flex-direction: column; /* Stack filter buttons vertically */
+        gap: 10px;
+        width: 250px;
+        max-width: 90vw; /* Responsive width */
+
+        &.is-visible {
+            display: flex; /* Show the filters when this class is active */
+        }
 
         .bazo-event-filter-button {
+            width: 100%; /* Make buttons full width */
+            justify-content: flex-start; /* Align text to the left */
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             padding: 8px 12px;

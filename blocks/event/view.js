@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const loadMoreBtnContainer = gridBlock.querySelector('.bazo-event-load-more');
         const loadMoreBtn = gridBlock.querySelector('.bazo-load-more-button');
         const filterButtons = gridBlock.querySelectorAll('.bazo-event-filter-button');
+        const filterIcon = gridBlock.querySelector('.bazo-event-filter-icon-button');
+        const filtersContainer = gridBlock.querySelector('.bazo-event-filters');
 
         // Initial settings from render.php data attributes
         let page = 1;
@@ -85,6 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
             loadMoreBtn.addEventListener('click', function () {
                 page++;
                 fetchEvents();
+            });
+        }
+        
+        // Event listener for the filter icon button
+        if (filterIcon && filtersContainer) {
+            filterIcon.addEventListener('click', function () {
+                filtersContainer.classList.toggle('is-visible');
             });
         }
 

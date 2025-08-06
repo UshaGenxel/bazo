@@ -43,18 +43,25 @@ ob_start();
     'data-posts-to-show' => esc_attr($posts_to_show),
     'data-post-type' => esc_attr($post_type),
     'data-taxonomy' => esc_attr($taxonomy),
-    'data-selected-categories' => json_encode($selected_categories), // Ensure this is an array of numbers
+    'data-selected-categories' => json_encode($selected_categories),
     'data-show-load-more' => json_encode($show_load_more_button)
 ]); ?>>
-    <div class="bazo-event-filters">
-        <button class="bazo-event-filter-button <?php echo empty($selected_categories) ? 'active' : ''; ?>" data-term="all">All</button>
-        <?php foreach ($all_categories as $category) : ?>
-            <button
-                class="bazo-event-filter-button <?php echo in_array($category->term_id, $selected_categories) ? 'active' : ''; ?>"
-                data-term="<?php echo esc_attr($category->term_id); ?>"> <!-- Pass term_id to data-term -->
-                <?php echo esc_html($category->name); ?>
-            </button>
-        <?php endforeach; ?>
+    <div class="bazo-event-filters-wrapper">
+        <button class="bazo-event-filter-icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+        </button>
+        <div class="bazo-event-filters">
+            <button class="bazo-event-filter-button <?php echo empty($selected_categories) ? 'active' : ''; ?>" data-term="all">All</button>
+            <?php foreach ($all_categories as $category) : ?>
+                <button
+                    class="bazo-event-filter-button <?php echo in_array($category->term_id, $selected_categories) ? 'active' : ''; ?>"
+                    data-term="<?php echo esc_attr($category->term_id); ?>">
+                    <?php echo esc_html($category->name); ?>
+                </button>
+            <?php endforeach; ?>
+        </div>
     </div>
     <div class="bazo-event-grid-container">
         <div class="bazo-event-grid">
@@ -78,8 +85,7 @@ ob_start();
                             <?php if ($event_date) : ?>
                                 <p class="bazo-event-card-date"><?php echo esc_html($event_date); ?></p>
                             <?php endif; ?>
-                            <!-- <div class="bazo-event-card-excerpt"><?php the_excerpt(); ?></div> -->
-                        </div>
+                            </div>
                     </a>
                 </div>
                 <?php

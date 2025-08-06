@@ -102,8 +102,8 @@ export default function Edit(props) {
                             <CheckboxControl
                                 key={category.id}
                                 label={category.name}
-                                checked={selectedCategories.includes(category.id)} // Check against category.id
-                                onChange={(isChecked) => handleCategoryChange(category.id, isChecked)} // Pass category.id
+                                checked={selectedCategories.includes(category.id)}
+                                onChange={(isChecked) => handleCategoryChange(category.id, isChecked)}
                             />
                         ))}
                     </PanelBody>
