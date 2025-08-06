@@ -23,6 +23,7 @@ function bazo_styles() {
 		wp_get_theme()->get( 'Version' )
 	);
 }
+
 add_action( 'wp_enqueue_scripts', 'bazo_styles' );
 
 function register_all_blocks() {
