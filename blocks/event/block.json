@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/event-grid",
+	"version": "1.0.0",
+	"title": "Event Grid",
+	"category": "theme",
+	"icon": "calendar-alt",
+	"description": "Displays a grid of events with filtering and pagination.",
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
+	},
+	"attributes": {
+		"postsToShow": {
+			"type": "number",
+			"default": 9
+		},
+		"selectedCategories": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "string"
+			}
+		},
+		"showLoadMoreButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"postType": {
+			"type": "string",
+			"default": "post"
+		},
+		"taxonomy": {
+			"type": "string",
+			"default": "category"
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}
