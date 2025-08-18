@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/myaccount",
+	"version": "0.1.0",
+	"title": "My Account",
+	"category": "theme",
+	"icon": "admin-users",
+	"description": "A dynamic block that provides user login, signup, and account menu functionality.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"yourprofileurl": {
+			"type": "string",
+			"default": "my_account"
+		},
+		"savedeventsurl": {
+			"type": "string",
+			"default": "save_event"
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

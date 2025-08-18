@@ -32,6 +32,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        // Function to update filter button active states
+        function updateFilterButtonStates() {
+            filterButtons.forEach(btn => {
+                const term = btn.getAttribute('data-term');
+                if (term === 'all') {
+                    btn.classList.toggle('active', selectedCategories.length === 0);
+                } else {
+                    btn.classList.toggle('active', selectedCategories.includes(parseInt(term)));
+                }
+            });
+        }
+
         function fetchEvents(reset = false) {
             // Use the 'taxonomy' variable to build the URL dynamically
             let url = `/bazo/wp-json/wp/v2/${postType}?per_page=${postsToShow}&page=${page}`;
@@ -50,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (reset) {
                         gridContainer.innerHTML = '';
                     }
-                    console.log('Fetched data:', data);
 
                     if (data.length === 0) {
                         if (reset) {
@@ -58,18 +69,34 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     } else {
                         data.forEach(post => {
+                            console.log('Fetched data:', post);
                             const box = document.createElement('div');
                             box.className = 'bazo-event-card';
+
+                            // Get category names from taxonomy (assume they are passed as `post.taxonomy_terms`)
+                            const categories = post.taxonomy_terms && Array.isArray(post.taxonomy_terms)
+                                ? post.taxonomy_terms.map(term => `<span class="bazo-event-category">${term.name}</span>`).join(' ')
+                                : '';
+
+                            // Get trimmed excerpt (first 10 words)
+                            const excerptText = post.excerpt && post.excerpt.rendered
+                                ? post.excerpt.rendered.replace(/(<([^>]+)>)/gi, '') // strip HTML
+                                : '';
+                            const trimmedExcerpt = excerptText.split(/\s+/).slice(0, 10).join(' ') + (excerptText.split(/\s+/).length > 10 ? '...' : '');
+
                             box.innerHTML = `
                                 <a href="${post.link}">
                                     ${post.featured_media_url ? `<div class="bazo-event-card-image"><img src="${post.featured_media_url}" alt=""/></div>` : ''}
                                     <div class="bazo-event-card-content">
+                                        <p class="bazo-event-card-category">${categories}</p>
                                         <h3>${post.title.rendered}</h3>
-                                        <p class="bazo-event-card-date">${post.event_date ? post.event_date : ''}</p>
-                                        <div class="bazo-event-card-excerpt">${post.excerpt && post.excerpt.rendered ? post.excerpt.rendered : ''}</div>
+                                        ${post.event_date ? `<p class="bazo-event-card-date">${post.event_date}</p>` : ''}
+                                        ${post.event_time ? `<p class="bazo-event-card-date">${post.event_time}</p>` : ''}
+                                        <samp class="bazo-event-card-short-description">${trimmedExcerpt}</samp>
                                     </div>
                                 </a>
                             `;
+
                             gridContainer.appendChild(box);
                         });
                     }
@@ -82,6 +109,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Initial call to set button visibility on page load
         updateLoadMoreButtonVisibility();
+        
+        // Initial call to set filter button states based on selected categories
+        updateFilterButtonStates();
 
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', function () {
@@ -101,14 +131,16 @@ document.addEventListener('DOMContentLoaded', function () {
             button.addEventListener('click', function () {
                 const term = this.getAttribute('data-term'); // Gets the term_id as a string
 
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-
                 if (term === 'all') {
-                    selectedCategories = [];
+                    // Show all posts from selected categories (or all if none selected)
+                    selectedCategories = JSON.parse(gridBlock.getAttribute('data-selected-categories') || '[]');
                 } else {
-                    selectedCategories = [parseInt(term)]; // Parse term_id as an integer
+                    // Show only posts from the specific clicked category
+                    selectedCategories = [parseInt(term)];
                 }
+
+                // Update filter button states
+                updateFilterButtonStates();
 
                 page = 1; // Reset page to 1 for new filter
                 fetchEvents(true); // Fetch new data and reset grid

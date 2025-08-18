@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/profile-form",
+	"version": "0.1.0",
+	"title": "Profile Form",
+	"category": "theme",
+	"icon": "admin-users",
+	"description": "A form for users to update their profile information.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

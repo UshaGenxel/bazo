@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/newarrivals",
+	"version": "0.1.0",
+	"title": "New Arrivals",
+	"category": "theme",
+	"icon": "cart",
+	"description": "Displays a list of the newest posts from WooCommerce or other post types.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"postsToShow": {
+			"type": "number",
+			"default": 9
+		},
+		"postType": {
+			"type": "string",
+			"default": "post"
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php"
+}

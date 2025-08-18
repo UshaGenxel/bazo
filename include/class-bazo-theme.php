@@ -43,7 +43,7 @@ class Bazo_Theme {
 	}
 
     public function register_rest_fields() {
-        register_rest_field('post', 'featured_media_url', [
+        register_rest_field('product', 'featured_media_url', [
             'get_callback' => function ($post_arr) {
                 $img_id = $post_arr['featured_media'];
                 if ($img_id) {
@@ -54,12 +54,36 @@ class Bazo_Theme {
             },
             'schema' => null,
         ]);
-        register_rest_field('post', 'event_date', [
-            'get_callback' => function ($post_arr) {
-                return get_field('event_date', $post_arr['id']);
-            },
-            'schema' => null,
-        ]);
+
+		register_rest_field('product', 'event_date', [
+			'get_callback' => function ($post_arr) {
+				return get_field('event_date', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
+		register_rest_field('product', 'event_time', [
+			'get_callback' => function ($post_arr) {
+				return get_field('event_time', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
+		register_rest_field('product', 'taxonomy_terms', [
+			'get_callback' => function ($post_arr) {
+				$terms = get_the_terms($post_arr['id'], 'product_cat');
+				if (is_wp_error($terms) || !$terms) return [];
+				return array_map(function ($term) {
+					return [
+						'id' => $term->term_id,
+						'name' => $term->name,
+						'slug' => $term->slug,
+					];
+				}, $terms);
+			},
+			'schema' => null,
+		]);
+
     }
 
 	public function enqueue_scripts() {

@@ -31,11 +31,21 @@ if (!empty($selected_categories)) {
 
 $query = new WP_Query($args);
 
-// Get all categories to render the filter buttons
-$all_categories = get_terms([
-    'taxonomy' => $taxonomy,
-    'hide_empty' => false,
-]);
+// Get only the selected categories to render the filter buttons
+$filter_categories = [];
+if (!empty($selected_categories)) {
+    $filter_categories = get_terms([
+        'taxonomy' => $taxonomy,
+        'include' => $selected_categories,
+        'hide_empty' => false,
+    ]);
+} else {
+    // If no categories selected, show all categories
+    $filter_categories = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+    ]);
+}
 
 ob_start();
 ?>
@@ -54,7 +64,7 @@ ob_start();
         </button>
         <div class="bazo-event-filters">
             <button class="bazo-event-filter-button <?php echo empty($selected_categories) ? 'active' : ''; ?>" data-term="all">All</button>
-            <?php foreach ($all_categories as $category) : ?>
+            <?php foreach ($filter_categories as $category) : ?>
                 <button
                     class="bazo-event-filter-button <?php echo in_array($category->term_id, $selected_categories) ? 'active' : ''; ?>"
                     data-term="<?php echo esc_attr($category->term_id); ?>">
@@ -70,8 +80,10 @@ ob_start();
             while ($query->have_posts()) {
                 $query->the_post();
 
-                // Assuming 'event_date' is an ACF field
+                // Assuming is an ACF field
                 $event_date = get_field('event_date', get_the_ID());
+                $event_time = get_field('event_time', get_the_ID());
+                
                 ?>
                 <div class="bazo-event-card">
                     <a href="<?php the_permalink(); ?>">
@@ -81,12 +93,44 @@ ob_start();
                             </div>
                         <?php endif; ?>
                         <div class="bazo-event-card-content">
+                            <p class="bazo-event-card-category">
+                                <?php
+                                $categories = get_the_terms(get_the_ID(), $taxonomy);
+                                if ($categories && !is_wp_error($categories)) {
+                                    foreach ($categories as $category) {
+                                        echo '<span class="bazo-event-category">' . esc_html($category->name) . '</span> ';
+                                    }
+                                }
+                                ?>
+                            </p>
                             <h3><?php the_title(); ?></h3>
                             <?php if ($event_date) : ?>
                                 <p class="bazo-event-card-date"><?php echo esc_html($event_date); ?></p>
                             <?php endif; ?>
-                            </div>
+                            
+                            <?php if ($event_time) : ?>
+                                <p class="bazo-event-card-date"><?php echo esc_html($event_time); ?></p>
+                            <?php endif; ?>
+                            <samp class="bazo-event-card-short-description"><?php
+                                $excerpt = get_the_excerpt();
+                                $trimmed = wp_trim_words($excerpt, 10, '...');
+                                echo esc_html($trimmed);
+                                ?>
+                            </samp>
+                        </div>
                     </a>
+                    <div class="wishlist-wrap">
+                        <?php
+                        // Check if YITH WooCommerce Wishlist is active
+                        if ( function_exists( 'YITH_WCWL' ) ) {
+                            // Use the correct shortcode for YITH WooCommerce Wishlist
+                            echo do_shortcode( '[yith_wcwl_add_to_wishlist product_id="' . get_the_ID() . '"]' );
+                        } elseif ( function_exists( 'yith_wcwl_add_to_wishlist' ) ) {
+                            // Alternative check for older versions
+                            echo do_shortcode( '[yith_wcwl_add_to_wishlist product_id="' . get_the_ID() . '"]' );
+                        }
+                        ?>
+                    </div>
                 </div>
                 <?php
             }
