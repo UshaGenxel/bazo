@@ -22,8 +22,73 @@ class Bazo_Theme {
 		add_action( 'rest_api_init', [ $this, 'register_rest_fields' ] ); // Corrected
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_action( 'enqueue_block_assets', [ $this, 'load_editor_assets' ] );
+		// Ensure Theme File Editor support in admin when allowed
+		add_action( 'admin_menu', [ $this, 'ensure_theme_file_editor_menu' ], 11 );
+		add_action( 'admin_notices', [ $this, 'maybe_show_file_editor_disabled_notice' ] );
+		add_filter( 'wp_theme_editor_filetypes', [ $this, 'extend_theme_editor_filetypes' ] );
+
+		add_filter( 'gettext', [ $this, 'translate_wishlist_text' ], 10, 3 );
+		add_filter( 'tinvwl_wishlist_item_name', [ $this, 'wishlist_item_name' ], 10, 3 );
 	}
-	
+
+	/**
+	 * Ensure the Appearance > Theme File Editor menu is available when permitted.
+	 */
+	public function ensure_theme_file_editor_menu() {
+		if ( is_multisite() ) {
+			return;
+		}
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) {
+			return;
+		}
+		if ( ! current_user_can( 'edit_themes' ) ) {
+			return;
+		}
+
+		global $submenu;
+		$has_theme_editor = false;
+		if ( isset( $submenu['themes.php'] ) ) {
+			foreach ( $submenu['themes.php'] as $item ) {
+				if ( isset( $item[2] ) && $item[2] === 'theme-editor.php' ) {
+					$has_theme_editor = true;
+					break;
+				}
+			}
+		}
+
+		if ( ! $has_theme_editor ) {
+			add_submenu_page(
+				'themes.php',
+				__( 'Theme File Editor', 'bazo' ),
+				__( 'Theme File Editor', 'bazo' ),
+				'edit_themes',
+				'theme-editor.php'
+			);
+		}
+	}
+
+	/**
+	 * Show an admin notice if file editing is disabled globally.
+	 */
+	public function maybe_show_file_editor_disabled_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) {
+			echo '<div class="notice notice-warning"><p>' . esc_html__( 'Theme File Editor is disabled by DISALLOW_FILE_EDIT in wp-config.php. Set it to false or remove it to enable editing.', 'bazo' ) . '</p></div>';
+		}
+	}
+
+	/**
+	 * Allow additional file types to be edited in the Theme File Editor.
+	 *
+	 * @param array $types Existing allowed extensions.
+	 * @return array Modified list of allowed extensions.
+	 */
+	public function extend_theme_editor_filetypes( $types ) {
+		$additional = array( 'js', 'json', 'scss', 'sass', 'md', 'txt', 'svg' );
+		return array_values( array_unique( array_merge( (array) $types, $additional ) ) );
+	}
 	public function register_all_blocks() {
 		$blocks_dir = get_template_directory() . '/build/';
 		foreach ( glob( $blocks_dir . '*', GLOB_ONLYDIR ) as $block_path ) :
@@ -84,6 +149,21 @@ class Bazo_Theme {
 			'schema' => null,
 		]);
 
+		register_rest_field( 'product', 'wishlist_html', array(
+			'get_callback' => function( $object ) {
+				if ( ! function_exists( 'do_shortcode' ) ) {
+					return '';
+				}
+				// Generate TI Wishlist button with shortcode
+				return do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $object['id'] . '"]' );
+			},
+			'schema' => array(
+				'description' => __( 'TI Wishlist button HTML', 'bazo' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit' ),
+			),
+		));
+
     }
 
 	public function enqueue_scripts() {
@@ -96,6 +176,45 @@ class Bazo_Theme {
 			$theme_version 			= wp_get_theme()->get( 'Version' );
 			wp_enqueue_style( 'main', get_theme_file_uri( '/assets/css/main.css' ), array(), $theme_version, 'all' );
 		endif;
+	}
+
+	
+	
+	/**
+     * Translate wishlist text from "Product Name" to "Event Name"
+     */
+    public function translate_wishlist_text( $translated, $text, $domain ) {
+        if ( $domain === 'ti-woocommerce-wishlist' && $text === 'Product Name' ) {
+            $translated = 'Event Name';
+        }
+        return $translated;
+    }
+
+	public function wishlist_item_name(  $item_name, $item, $wishlist ) {
+		if ( isset( $item['product_id'] ) ) {
+			$product = wc_get_product( $item['product_id'] );
+			if ( $product ) {
+				// Get the short description (excerpt) OR use full description
+				$short_desc = $product->get_short_description();
+				if ( ! $short_desc ) {
+					$short_desc = $product->get_description();
+				}
+	
+				if ( $short_desc ) {
+					// Strip HTML and limit to 25 words
+					$plain_text = wp_strip_all_tags( $short_desc );
+					$words = preg_split( '/\s+/', $plain_text );
+					if ( count( $words ) > 25 ) {
+						$trimmed = implode( ' ', array_slice( $words, 0, 25 ) ) . '...';
+					} else {
+						$trimmed = $plain_text;
+					}
+	
+					$item_name .= '<div class="tinvwl-event-description">' . esc_html( $trimmed ) . '</div>';
+				}
+			}
+		}
+		return $item_name;
 	}
 
 }

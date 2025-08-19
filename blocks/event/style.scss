@@ -60,6 +60,35 @@
         }
     }
 
+    /* Loader Styles */
+    .bazo-event-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        margin: 20px 0;
+        
+        .bazo-loader-gif {
+            margin-bottom: 16px;
+            
+            img {
+                width: 60px;
+                height: 60px;
+                display: block;
+            }
+        }
+        
+        .bazo-loader-text {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+
+
     .bazo-event-grid-container {
         .bazo-event-grid {
             display: grid;

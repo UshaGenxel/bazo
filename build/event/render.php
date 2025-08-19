@@ -7,6 +7,7 @@
 $posts_to_show = $attributes['postsToShow'] ?? 9;
 $selected_categories = $attributes['selectedCategories'] ?? []; // This now contains term_ids (numbers)
 $show_load_more_button = $attributes['showLoadMoreButton'] ?? true;
+$show_loader = $attributes['showLoader'] ?? true;
 $post_type = $attributes['postType'] ?? 'post';
 $taxonomy = $attributes['taxonomy'] ?? 'category';
 $paged = 1;
@@ -54,7 +55,8 @@ ob_start();
     'data-post-type' => esc_attr($post_type),
     'data-taxonomy' => esc_attr($taxonomy),
     'data-selected-categories' => json_encode($selected_categories),
-    'data-show-load-more' => json_encode($show_load_more_button)
+    'data-show-load-more' => json_encode($show_load_more_button),
+    'data-show-loader' => json_encode($show_loader)
 ]); ?>>
     <div class="bazo-event-filters-wrapper">
         <button class="bazo-event-filter-icon-button">
@@ -73,6 +75,15 @@ ob_start();
             <?php endforeach; ?>
         </div>
     </div>
+    
+    <?php if ($show_loader) : ?>
+    <div class="bazo-event-loader" style="display: none;">
+        <div class="bazo-loader-gif">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/loader.gif" alt="Loading..." />
+        </div>
+    </div>
+    <?php endif; ?>
+    
     <div class="bazo-event-grid-container">
         <div class="bazo-event-grid">
         <?php
@@ -121,14 +132,7 @@ ob_start();
                     </a>
                     <div class="wishlist-wrap">
                         <?php
-                        // Check if YITH WooCommerce Wishlist is active
-                        if ( function_exists( 'YITH_WCWL' ) ) {
-                            // Use the correct shortcode for YITH WooCommerce Wishlist
-                            echo do_shortcode( '[yith_wcwl_add_to_wishlist product_id="' . get_the_ID() . '"]' );
-                        } elseif ( function_exists( 'yith_wcwl_add_to_wishlist' ) ) {
-                            // Alternative check for older versions
-                            echo do_shortcode( '[yith_wcwl_add_to_wishlist product_id="' . get_the_ID() . '"]' );
-                        }
+                            echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . get_the_ID() . '"]' );
                         ?>
                     </div>
                 </div>

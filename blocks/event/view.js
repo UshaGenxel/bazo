@@ -9,17 +9,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const filterButtons = gridBlock.querySelectorAll('.bazo-event-filter-button');
         const filterIcon = gridBlock.querySelector('.bazo-event-filter-icon-button');
         const filtersContainer = gridBlock.querySelector('.bazo-event-filters');
+        const loader = gridBlock.querySelector('.bazo-event-loader');
 
         // Initial settings from render.php data attributes
         let page = 1;
         const postsToShow = gridBlock.getAttribute('data-posts-to-show');
         const postType = gridBlock.getAttribute('data-post-type');
         const taxonomy = gridBlock.getAttribute('data-taxonomy');
+        const showLoader = JSON.parse(gridBlock.getAttribute('data-show-loader') || 'true');
         // selectedCategories will now contain numbers (term_ids)
         let selectedCategories = JSON.parse(gridBlock.getAttribute('data-selected-categories') || '[]');
 
         // maxPages will be updated on every fetch based on API response headers
         let maxPages = loadMoreBtnContainer ? parseInt(loadMoreBtnContainer.getAttribute('data-max-pages')) : 1;
+
+        // Function to show/hide loader
+        function showLoaderElement() {
+            if (loader && showLoader) {
+                loader.style.display = 'flex';
+            }
+        }
+
+        function hideLoaderElement() {
+            if (loader && showLoader) {
+                loader.style.display = 'none';
+            }
+        }
 
         // Function to update the visibility of the Load More button
         function updateLoadMoreButtonVisibility() {
@@ -45,8 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function fetchEvents(reset = false) {
+            // Show loader at the start of fetch
+            showLoaderElement();
+            
             // Use the 'taxonomy' variable to build the URL dynamically
-            let url = `/bazo/wp-json/wp/v2/${postType}?per_page=${postsToShow}&page=${page}`;
+            let url = `/wp-json/wp/v2/${postType}?per_page=${postsToShow}&page=${page}`;
             if (selectedCategories.length) {
                 // Use the dynamic taxonomy for the filter parameter
                 url += `&${taxonomy}=${selectedCategories.join(',')}`;
@@ -69,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     } else {
                         data.forEach(post => {
-                            console.log('Fetched data:', post);
+                            // console.log('Fetched data:', post.wishlist_html);
                             const box = document.createElement('div');
                             box.className = 'bazo-event-card';
 
@@ -95,16 +113,30 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <samp class="bazo-event-card-short-description">${trimmedExcerpt}</samp>
                                     </div>
                                 </a>
+                                <div class="wishlist-wrap">
+                                    ${post.wishlist_html ? post.wishlist_html : ''}
+                                </div>
                             `;
 
                             gridContainer.appendChild(box);
+
+                            if (typeof tinvwl_add_to_wishlist === 'function') {
+                                tinvwl_add_to_wishlist();
+                            }
                         });
                     }
 
                     // Call this function after every fetch to update the button's visibility
                     updateLoadMoreButtonVisibility();
+                    
+                    // Hide loader after successful fetch
+                    hideLoaderElement();
                 })
-                .catch(error => console.error('Error fetching events:', error));
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    // Hide loader on error too
+                    hideLoaderElement();
+                });
         }
 
         // Initial call to set button visibility on page load
@@ -112,6 +144,15 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Initial call to set filter button states based on selected categories
         updateFilterButtonStates();
+        
+        // Show initial loader if enabled
+        if (showLoader && loader) {
+            showLoaderElement();
+            // Hide loader after a short delay to show it was working
+            setTimeout(() => {
+                hideLoaderElement();
+            }, 500);
+        }
 
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', function () {
@@ -141,6 +182,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Update filter button states
                 updateFilterButtonStates();
+
+                // Hide the filters popup after selection
+                if (filtersContainer) {
+                    filtersContainer.classList.remove('is-visible');
+                }
 
                 page = 1; // Reset page to 1 for new filter
                 fetchEvents(true); // Fetch new data and reset grid

@@ -37,6 +37,10 @@
 		"taxonomy": {
 			"type": "string",
 			"default": "category"
+		},
+		"showLoader": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"textdomain": "bazo",

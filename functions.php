@@ -32,3 +32,4 @@ add_action( 'wp_enqueue_scripts', 'bazo_styles' );
 require_once "include/class-bazo-theme.php";
 require_once "include/class-bazo-myaccount-block.php";
 
+

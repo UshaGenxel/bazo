@@ -7,7 +7,7 @@ import './editor.scss';
 
 export default function Edit(props) {
     const { attributes, setAttributes } = props;
-    const { postsToShow, selectedCategories, showLoadMoreButton, postType, taxonomy } = attributes;
+    const { postsToShow, selectedCategories, showLoadMoreButton, postType, taxonomy, showLoader } = attributes;
     const blockProps = useBlockProps();
 
     // Fetch available post types dynamically from WordPress
@@ -90,6 +90,11 @@ export default function Edit(props) {
                         checked={showLoadMoreButton}
                         onChange={() => setAttributes({ showLoadMoreButton: !showLoadMoreButton })}
                     />
+                    <ToggleControl
+                        label={__('Show Loader', 'bazo')}
+                        checked={showLoader}
+                        onChange={() => setAttributes({ showLoader: !showLoader })}
+                    />
                 </PanelBody>
                 {taxonomy && (
                     <PanelBody title={__('Filter by Category', 'bazo')}>
@@ -110,6 +115,13 @@ export default function Edit(props) {
                 )}
             </InspectorControls>
             <div {...blockProps}>
+                {showLoader && (
+                    <div className="bazo-event-loader" style={{ display: 'flex' }}>
+                        <div className="bazo-loader-gif">
+                            <img src="/wp-content/themes/bazo/assets/images/loader.gif" alt="Loading..." />
+                        </div>
+                    </div>
+                )}
                 <ServerSideRender
                     block="bazo/event-grid"
                     attributes={attributes}
