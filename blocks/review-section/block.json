@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/review-section",
+	"version": "1.0.0",
+	"title": "Review Section",
+	"category": "theme",
+	"icon": "star-filled",
+	"description": "Displays a review section with rating options and comment functionality.",
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
+	},
+	"attributes": {
+		"showReviewOptions": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

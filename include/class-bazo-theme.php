@@ -29,6 +29,9 @@ class Bazo_Theme {
 
 		add_filter( 'gettext', [ $this, 'translate_wishlist_text' ], 10, 3 );
 		add_filter( 'tinvwl_wishlist_item_name', [ $this, 'wishlist_item_name' ], 10, 3 );
+
+		add_filter('nav_menu_css_class', [ $this, 'bazo_add_nav_menu_active_classes' ], 10, 3);
+		add_filter('render_block', [ $this, 'bazo_navigation_block_active_classes' ], 10, 2);
 	}
 
 	/**
@@ -169,6 +172,9 @@ class Bazo_Theme {
 	public function enqueue_scripts() {
 		$theme_version 			= wp_get_theme()->get( 'Version' );
 		wp_enqueue_style( 'main', get_theme_file_uri( '/assets/css/main.css' ), array(), $theme_version, 'all' );
+
+		// wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY', [], null, true );
+    	//wp_enqueue_script( 'acf-map-init', get_theme_file_uri( '/assets/js/acf-map.js'), ['google-map','jquery'], null, true );
 	}
 
 	public function load_editor_assets() {
@@ -184,9 +190,32 @@ class Bazo_Theme {
      * Translate wishlist text from "Product Name" to "Event Name"
      */
     public function translate_wishlist_text( $translated, $text, $domain ) {
-        if ( $domain === 'ti-woocommerce-wishlist' && $text === 'Product Name' ) {
-            $translated = 'Event Name';
-        }
+        
+		if ( $domain === 'ti-woocommerce-wishlist' ) {
+
+			if ( $text === 'Product Name' ) {
+				$translated = 'Event Name';
+			}
+
+			// Empty wishlist message
+			if ( $text === 'Your Wishlist is currently empty.' ) {
+				return 'Your saved events list is currently empty.';
+			}
+	
+			// Return to shop button
+			if ( $text === 'Return To Shop' ) {
+				return 'Return To Events';
+			}
+	
+			if ( $text === '%s has been removed from the wishlist.' ) {
+				$translated = '%s has been removed from your saved events.';
+			}
+	
+			if ( $text === '%s has not been removed from the wishlist.' ) {
+				$translated = '%s could not be removed from your saved events.';
+			}
+		}
+	
         return $translated;
     }
 
@@ -217,6 +246,101 @@ class Bazo_Theme {
 		return $item_name;
 	}
 
+
+	/**
+	 * Add active classes to navigation menu items
+	 *
+	 * @since 1.0.0
+	 * 
+	 * @return void
+	 */
+	public function bazo_add_nav_menu_active_classes($classes, $item, $args) {
+		// Check if this is the primary navigation
+		if ($args->theme_location === 'primary' || $args->menu_class === 'wp-block-navigation__container') {
+			// Check if current page matches menu item
+			if (is_page() && $item->object_id == get_queried_object_id()) {
+				$classes[] = 'current_page_item';
+			}
+			
+			// Check if current post type matches menu item
+			if (is_singular() && $item->object_id == get_queried_object_id()) {
+				$classes[] = 'current-menu-item';
+			}
+			
+			// Check if current archive matches menu item
+			if (is_archive() && $item->object_id == get_queried_object_id()) {
+				$classes[] = 'current-menu-item';
+			}
+			
+			// Check if current post type archive matches menu item
+			if (is_post_type_archive() && $item->object_id == get_queried_object_id()) {
+				$classes[] = 'current-menu-item';
+			}
+			
+			// Check if current category/tag matches menu item
+			if (is_category() || is_tag() || is_tax()) {
+				$current_term = get_queried_object();
+				if ($item->object_id == $current_term->term_id) {
+					$classes[] = 'current-menu-item';
+				}
+			}
+			
+			// Check if current search results
+			if (is_search() && $item->url && strpos($item->url, 'search') !== false) {
+				$classes[] = 'current-menu-item';
+			}
+			
+			// Check if current 404 page
+			if (is_404() && $item->url && strpos($item->url, '404') !== false) {
+				$classes[] = 'current-menu-item';
+			}
+		}
+		
+		return $classes;
+	}
+
+	/**
+	 * Add active classes to navigation block menu items
+	 *
+	 * @since 1.0.0
+	 * 
+	 * @return void
+	 */
+	public function bazo_navigation_block_active_classes($block_content, $block) {
+		if ($block['blockName'] === 'core/navigation') {
+			// Add active class to current page menu item
+			if (is_page()) {
+				$current_page_id = get_queried_object_id();
+				$block_content = str_replace(
+					'wp-block-navigation-item__content',
+					'wp-block-navigation-item__content current_page_item',
+					$block_content
+				);
+			}
+			
+			// Add active class to current post menu item
+			if (is_single()) {
+				$current_post_id = get_queried_object_id();
+				$block_content = str_replace(
+					'wp-block-navigation-item__content',
+					'wp-block-navigation-item__content current-menu-item',
+					$block_content
+				);
+			}
+			
+			// Add active class to current archive menu item
+			if (is_archive()) {
+				$block_content = str_replace(
+					'wp-block-navigation-item__content',
+					'wp-block-navigation-item__content current-menu-item',
+					$block_content
+				);
+			}
+		}
+		
+		return $block_content;
+	}
+	
 }
 
 // Instantiate the theme class.

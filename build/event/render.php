@@ -56,7 +56,8 @@ ob_start();
     'data-taxonomy' => esc_attr($taxonomy),
     'data-selected-categories' => json_encode($selected_categories),
     'data-show-load-more' => json_encode($show_load_more_button),
-    'data-show-loader' => json_encode($show_loader)
+    'data-show-loader' => json_encode($show_loader),
+    'data-placeholder-url' => esc_attr(get_template_directory_uri() . '/assets/images/placeholder.png')
 ]); ?>>
     <div class="bazo-event-filters-wrapper">
         <button class="bazo-event-filter-icon-button">
@@ -78,8 +79,15 @@ ob_start();
     
     <?php if ($show_loader) : ?>
     <div class="bazo-event-loader" style="display: none;">
-        <div class="bazo-loader-gif">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/loader.gif" alt="Loading..." />
+        <div class="dot-spinner">
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
         </div>
     </div>
     <?php endif; ?>
@@ -98,11 +106,13 @@ ob_start();
                 ?>
                 <div class="bazo-event-card">
                     <a href="<?php the_permalink(); ?>">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="bazo-event-card-image">
+                        <div class="bazo-event-card-image">
+                            <?php if (has_post_thumbnail()) : ?>
                                 <?php the_post_thumbnail('large'); ?>
-                            </div>
-                        <?php endif; ?>
+                            <?php else : ?>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder.png" alt="Event placeholder" />
+                            <?php endif; ?>
+                        </div>
                         <div class="bazo-event-card-content">
                             <p class="bazo-event-card-category">
                                 <?php

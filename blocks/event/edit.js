@@ -117,8 +117,15 @@ export default function Edit(props) {
             <div {...blockProps}>
                 {showLoader && (
                     <div className="bazo-event-loader" style={{ display: 'flex' }}>
-                        <div className="bazo-loader-gif">
-                            <img src="/wp-content/themes/bazo/assets/images/loader.gif" alt="Loading..." />
+                        <div class="dot-spinner">
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
                         </div>
                     </div>
                 )}

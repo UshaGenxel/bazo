@@ -1,0 +1,37 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/product-header",
+	"version": "1.0.0",
+	"title": "Product Header",
+	"category": "theme",
+	"icon": "products",
+	"description": "Displays product header with back button, title, share button, wishlist, and navigation controls.",
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
+	},
+	"attributes": {
+		"showShare": {
+			"type": "boolean",
+			"default": true
+		},
+		"showWishlist": {
+			"type": "boolean",
+			"default": true
+		},
+		"showNavigation": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

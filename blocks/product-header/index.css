@@ -1,0 +1,68 @@
+/* Product Header Block Editor Styles */
+
+.bazo-product-header-preview {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background: #f9f9f9;
+    margin: 20px 0;
+}
+
+.bazo-product-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.bazo-product-header-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 6px;
+    background: #f0f0f0;
+}
+
+.bazo-product-header-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.bazo-product-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.bazo-product-header-action {
+    padding: 8px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+.bazo-product-header-navigation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.bazo-product-header-divider {
+    width: 1px;
+    height: 16px;
+    background: #e0e0e0;
+}

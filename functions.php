@@ -32,4 +32,7 @@ add_action( 'wp_enqueue_scripts', 'bazo_styles' );
 require_once "include/class-bazo-theme.php";
 require_once "include/class-bazo-myaccount-block.php";
 
-
+// Change the button URL
+add_filter( 'woocommerce_return_to_shop_redirect', function () {
+    return home_url();
+});

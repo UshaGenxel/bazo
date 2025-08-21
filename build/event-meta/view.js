@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".wp-block-bazo-event-meta").forEach(e=>{console.log("Event Meta block loaded:",e)})});

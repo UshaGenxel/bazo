@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/event-meta",
+	"version": "1.0.0",
+	"title": "Event Meta",
+	"category": "theme",
+	"icon": "calendar",
+	"description": "Displays event meta information like date, time, venue, and action buttons.",
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
+	},
+	"attributes": {
+		"showMap": {
+			"type": "boolean",
+			"default": true
+		},
+		"showActions": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

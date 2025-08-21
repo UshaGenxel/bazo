@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const postType = gridBlock.getAttribute('data-post-type');
         const taxonomy = gridBlock.getAttribute('data-taxonomy');
         const showLoader = JSON.parse(gridBlock.getAttribute('data-show-loader') || 'true');
+        const placeholderUrl = gridBlock.getAttribute('data-placeholder-url') || '/wp-content/themes/bazo/assets/images/placeholder.png';
         // selectedCategories will now contain numbers (term_ids)
         let selectedCategories = JSON.parse(gridBlock.getAttribute('data-selected-categories') || '[]');
 
@@ -104,7 +105,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             box.innerHTML = `
                                 <a href="${post.link}">
-                                    ${post.featured_media_url ? `<div class="bazo-event-card-image"><img src="${post.featured_media_url}" alt=""/></div>` : ''}
+                                    <div class="bazo-event-card-image">
+                                        ${post.featured_media_url ? `<img src="${post.featured_media_url}" alt=""/>` : `<img src="${placeholderUrl}" alt="Event placeholder" />`}
+                                    </div>
                                     <div class="bazo-event-card-content">
                                         <p class="bazo-event-card-category">${categories}</p>
                                         <h3>${post.title.rendered}</h3>
