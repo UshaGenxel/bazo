@@ -58,7 +58,7 @@
             <!-- /wp:social-links -->
 
             <!-- wp:paragraph {"fontSize":"small"} -->
-            <p class="has-small-font-size"><?php echo esc_html__( '© BAZO 2024. powered by Oearth', 'bazo' ); ?></p>
+            <p class="has-small-font-size"><?php echo esc_html__( '© BAZO ' . date('Y') . '. powered by <a href="https://spiderwares.com/">spiderwares</a>', 'bazo' ); ?></p>
             <!-- /wp:paragraph -->
         </div>
         <!-- /wp:group -->
