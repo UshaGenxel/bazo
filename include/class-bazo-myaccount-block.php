@@ -54,15 +54,39 @@ class Bazo_Myaccount_Block {
     public function handle_login() {
         check_ajax_referer( 'bazo-login-nonce', 'security' );
 
+        $user_email = sanitize_email( $_POST['user_email'] );
+        $user_password = $_POST['user_password'];
+
+        // Validate email
+        if ( empty( $user_email ) || ! is_email( $user_email ) ) {
+            wp_send_json_error( __( 'Please enter a valid email address.', 'bazo' ) );
+        }
+
+        // Check if user exists
+        $user = get_user_by( 'email', $user_email );
+        if ( ! $user ) {
+            wp_send_json_error( __( 'Email address not found. Please check your email or create an account.', 'bazo' ) );
+        }
+
+        // Attempt to authenticate
         $creds = array();
-        $creds['user_login'] = sanitize_user( $_POST['user_email'] );
-        $creds['user_password'] = $_POST['user_password'];
+        $creds['user_login'] = $user_email;
+        $creds['user_password'] = $user_password;
         $creds['remember'] = true;
 
-        $user = wp_signon( $creds, false );
+        $authenticated_user = wp_signon( $creds, false );
 
-        if ( is_wp_error( $user ) ) {
-            wp_send_json_error( $user->get_error_message() );
+        if ( is_wp_error( $authenticated_user ) ) {
+            // Check for specific error types and provide clean messages
+            $error_code = $authenticated_user->get_error_code();
+            
+            if ( $error_code === 'invalid_username' || $error_code === 'invalid_email' ) {
+                wp_send_json_error( __( 'Email address not found. Please check your email or create an account.', 'bazo' ) );
+            } elseif ( $error_code === 'incorrect_password' ) {
+                wp_send_json_error( __( 'The password you entered is incorrect. Please try again.', 'bazo' ) );
+            } else {
+                wp_send_json_error( __( 'Login failed. Please check your credentials and try again.', 'bazo' ) );
+            }
         } else {
             wp_send_json_success( array( 'message' => __( 'Login successful! Reloading...', 'bazo' ) ) );
         }
@@ -126,19 +150,43 @@ class Bazo_Myaccount_Block {
         }
 
         $user = get_user_by( 'email', $user_email );
-        $reset_key = get_password_reset_key( $user );
         
-        if ( is_wp_error( $reset_key ) ) {
-            wp_send_json_error( __( 'Could not generate a password reset key. Please try again.', 'bazo' ) );
+        // Generate a new random password
+        $new_password = wp_generate_password( 12, false );
+        
+        // Update the user's password
+        $update_result = wp_update_user( array(
+            'ID' => $user->ID,
+            'user_pass' => $new_password
+        ) );
+        
+        if ( is_wp_error( $update_result ) ) {
+            wp_send_json_error( __( 'Could not update password. Please try again.', 'bazo' ) );
         }
 
-        $reset_link = network_site_url( "wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode( $user->user_login ), 'login' );
+        // Prepare email content
+        $site_name = get_bloginfo( 'name' );
+        $subject = sprintf( __( 'Your new password for %s', 'bazo' ), $site_name );
         
-        $message = "To reset your password, please visit the following address:\n\n$reset_link\n";
+        $message = sprintf(
+            __( 'Hello %s,
 
-        // You may want to use a more robust email sending function or a custom email template here.
-        if ( wp_mail( $user_email, __( 'Password Reset Request', 'bazo' ), $message ) ) {
-            wp_send_json_success( array( 'message' => __( 'A password reset link has been sent to your email.', 'bazo' ) ) );
+Your password has been reset successfully.
+
+Your new password is: %s
+
+Please login with this new password and change it to something you can remember.
+
+Best regards,
+%s Team', 'bazo' ),
+            $user->display_name,
+            $new_password,
+            $site_name
+        );
+
+        // Send the email with the new password
+        if ( wp_mail( $user_email, $subject, $message ) ) {
+            wp_send_json_success( array( 'message' => __( 'A new password has been sent to your email address.', 'bazo' ) ) );
         } else {
             wp_send_json_error( __( 'An error occurred while sending the email. Please check your mail server configuration.', 'bazo' ) );
         }

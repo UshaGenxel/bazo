@@ -4,7 +4,8 @@
 function openShareModal() {
     const modal = document.getElementById('shareModal');
     if (modal) {
-        modal.style.display = 'block';
+        modal.classList.remove('is-hidden');
+        modal.classList.add('is-visible');
         document.body.style.overflow = 'hidden';
     }
 }
@@ -12,7 +13,8 @@ function openShareModal() {
 function closeShareModal() {
     const modal = document.getElementById('shareModal');
     if (modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('is-visible');
+        modal.classList.add('is-hidden');
         document.body.style.overflow = 'auto';
     }
 }

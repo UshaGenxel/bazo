@@ -41,6 +41,39 @@
 		"showLoader": {
 			"type": "boolean",
 			"default": true
+		},
+		"showAds": {
+			"type": "boolean",
+			"default": true
+		},
+		"adPositions": {
+			"type": "array",
+			"default": [
+				{
+					"position": 3,
+					"span": 2,
+					"text": "AD Video"
+				},
+				{
+					"position": 15,
+					"span": 4,
+					"text": "AD Video"
+				}
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"position": {
+						"type": "number"
+					},
+					"span": {
+						"type": "number"
+					},
+					"text": {
+						"type": "string"
+					}
+				}
+			}
 		}
 	},
 	"textdomain": "bazo",

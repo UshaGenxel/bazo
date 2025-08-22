@@ -49,13 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to display a message
     const showMessage = (element, message, type = 'error') => {
-        element.textContent = message;
-        element.style.color = type === 'error' ? 'red' : 'green';
-        element.style.padding = '0.5rem';
-        element.style.textAlign = 'center';
-        element.style.borderRadius = '0.5rem';
-        element.style.marginBottom = '1rem';
-        element.style.backgroundColor = type === 'error' ? '#fecaca' : '#dcfce7';
+        if (!element) {
+            console.error('Message element not found');
+            return;
+        }
+        
+        // Strip HTML tags from message to ensure clean text
+        const cleanMessage = message.replace(/<[^>]*>/g, '');
+        
+        element.textContent = cleanMessage;
+        element.className = `form-message ${type}`;
+        
+        // Add specific styling for error and success
+        if (type === 'error') {
+            element.style.color = '#dc2626';
+            element.style.backgroundColor = '#fef2f2';
+            element.style.border = '1px solid #fecaca';
+        } else if (type === 'success') {
+            element.style.color = '#059669';
+            element.style.backgroundColor = '#f0fdf4';
+            element.style.border = '1px solid #bbf7d0';
+        }
+        
+        // Make sure the message is visible
+        element.style.display = 'block';
     };
 
     // Event listeners for opening modals

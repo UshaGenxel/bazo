@@ -143,19 +143,19 @@ ob_start();
     
     <?php if ($show_share) : ?>
         <!-- Share Modal -->
-        <div id="shareModal" class="bazo-share-modal">
-            <div>
-                <div>
-                    <h3><?php echo esc_html__('Share Product', 'bazo'); ?></h3>
+        <div id="shareModal" class="bazo-share-modal modal-container is-hidden">
+            <div class="bazo-share-modal-content">
+                <div class="bazo-share-modal-header">
                     <button onclick="closeShareModal()" title="<?php echo esc_attr__('Close', 'bazo'); ?>">
                         <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                         </svg>
                     </button>
+                    <h3><?php echo esc_html__('Share Product', 'bazo'); ?></h3>
                 </div>
                 
-                <div>
-                    <div>
+                <div class="bazo-share-modal-body">
+                    <div class="bazo-share-modal-image">
                         <div id="productImage">
                             <?php if ($product_image) : ?>
                                 <img src="<?php echo esc_url($product_image); ?>" alt="<?php echo esc_attr($post_title); ?>">
@@ -165,14 +165,13 @@ ob_start();
                                 </svg>
                             <?php endif; ?>
                         </div>
-                        <div>
+                        <div class="bazo-share-modal-title">
                             <h4 id="productTitle"><?php echo esc_html($post_title); ?></h4>
-                            <p ><?php echo esc_html__('Click to copy link', 'bazo'); ?></p>
                         </div>
                     </div>
                 </div>
                 
-                <div >
+                <div class="bazo-share-modal-footer">
                     <button onclick="shareToFacebook()">
                         <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
                             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -200,10 +199,6 @@ ob_start();
                         </svg>
                         <?php echo esc_html__('Copy Link', 'bazo'); ?>
                     </button>
-                </div>
-                
-                <div>
-                    <button onclick="closeShareModal()"><?php echo esc_html__('Cancel', 'bazo'); ?></button>
                 </div>
             </div>
         </div>

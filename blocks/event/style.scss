@@ -42,6 +42,13 @@
             display: flex; /* Show the filters when this class is active */
         }
 
+        .bazo-event-filters-category {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .bazo-event-filter-button {
             width: 100%; /* Make buttons full width */
             justify-content: flex-start; /* Align text to the left */
@@ -87,7 +94,58 @@
         }
     }
 
+    /* Google Ad Block Styles */
+    .bazo-ad-block {
+        background: #f5f5f5;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+        border: 2px dashed #ddd;
+        transition: all 0.3s ease;
+        cursor: pointer;
 
+        &:hover {
+            background: #e8e8e8;
+            border-color: #bbb;
+        }
+
+        .bazo-ad-content {
+            text-align: center;
+            padding: 20px;
+
+            .bazo-ad-text {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: #666;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+        }
+
+        /* Ad span classes for different column spans */
+        &.bazo-ad-span-2 {
+            grid-column: span 2;
+        }
+
+        &.bazo-ad-span-3 {
+            grid-column: span 3;
+        }
+
+        &.bazo-ad-span-4 {
+            grid-column: span 4;
+        }
+
+        /* Responsive adjustments for ads */
+        @media (max-width: 768px) {
+            &.bazo-ad-span-2,
+            &.bazo-ad-span-3,
+            &.bazo-ad-span-4 {
+                grid-column: span 1; /* Force single column on mobile */
+            }
+        }
+    }
 
     .bazo-event-grid-container {
         .bazo-event-grid {
@@ -113,7 +171,7 @@
 
             @media (max-width: 768px) {
                 grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 16px;
+                gap: 20px;
             }
 
             @media (max-width: 576px) {

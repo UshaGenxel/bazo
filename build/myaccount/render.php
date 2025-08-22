@@ -121,14 +121,14 @@ $savedeventsurl = $attributes['savedeventsurl'] ?? 'save_event';
                 <div class="text-center">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/forget.png" alt="BAZO Logo" class="mx-auto mb-4">
                     <h2 class="form-title"><?php echo esc_html__( 'Forgot Password?', 'bazo' ); ?></h2>
-                    <p class="bazo_forgot_text mt-2"><?php echo esc_html__( 'Enter your email to receive a reset link.', 'bazo' ); ?></p>
+                    <p class="bazo_forgot_text mt-2"><?php echo esc_html__( 'Enter your email to receive a new password.', 'bazo' ); ?></p>
                     <div id="forgot-password-message" class="form-message"></div>
                 </div>
                 <form id="forgot-password-form">
                     <input type="email" name="user_email" placeholder="<?php echo esc_attr__( 'E-mail', 'bazo' ); ?>" class="input-field" required>
                     <input type="hidden" name="action" value="bazo_handle_forgot_password">
                     <input type="hidden" name="security" value="<?php echo esc_attr( $forgot_password_nonce ); ?>">
-                    <button type="submit" class="submit-button black-button"><?php echo esc_html__( 'Send Reset Link', 'bazo' ); ?></button>
+                    <button type="submit" class="submit-button black-button"><?php echo esc_html__( 'Send New Password', 'bazo' ); ?></button>
                 </form>
                 <div class="text-center bazo_sign_up">
                     <a href="#" id="forgot-to-login" class="toggle-link"><?php echo esc_html__( 'Back to login', 'bazo' ); ?></a>

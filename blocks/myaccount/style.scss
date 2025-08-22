@@ -54,6 +54,8 @@
 		transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 		transform: scale(0.95);
 		opacity: 1;
+		max-height: 80vh;
+  		overflow-y: auto;
 
 		.modal-container.is-visible & {
 			transform: scale(1);
@@ -98,6 +100,21 @@
 	
 	.text-center {
 		text-align: center;
+	}
+
+	.form-message {
+		padding: 10px 15px;
+		border-radius: 8px;
+		margin-bottom: 15px;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-size: 14px;
+		font-weight: 400;
+		text-align: center;
+		min-height: 20px;
+		
+		&:empty {
+			display: none;
+		}
 	}
 
 	.mx-auto {

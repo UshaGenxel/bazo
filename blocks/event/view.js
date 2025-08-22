@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const filterButtons = gridBlock.querySelectorAll('.bazo-event-filter-button');
         const filterIcon = gridBlock.querySelector('.bazo-event-filter-icon-button');
         const filtersContainer = gridBlock.querySelector('.bazo-event-filters');
+        const filterCloseBtn = gridBlock.querySelector('.bazo-event-filter-close');
         const loader = gridBlock.querySelector('.bazo-event-loader');
 
         // Initial settings from render.php data attributes
@@ -17,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const postType = gridBlock.getAttribute('data-post-type');
         const taxonomy = gridBlock.getAttribute('data-taxonomy');
         const showLoader = JSON.parse(gridBlock.getAttribute('data-show-loader') || 'true');
+        const showAds = JSON.parse(gridBlock.getAttribute('data-show-ads') || 'true');
+        const adPositions = JSON.parse(gridBlock.getAttribute('data-ad-positions') || '[]');
         const placeholderUrl = gridBlock.getAttribute('data-placeholder-url') || '/wp-content/themes/bazo/assets/images/placeholder.png';
         // selectedCategories will now contain numbers (term_ids)
         let selectedCategories = JSON.parse(gridBlock.getAttribute('data-selected-categories') || '[]');
@@ -60,6 +63,39 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
+        // Function to create ad block element
+        function createAdBlock(ad) {
+            const adBlock = document.createElement('div');
+            adBlock.className = `bazo-ad-block bazo-ad-span-${ad.span}`;
+            adBlock.innerHTML = `
+                <div class="bazo-ad-content">
+                    <span class="bazo-ad-text">${ad.text}</span>
+                </div>
+            `;
+            return adBlock;
+        }
+
+        // Function to insert ads at correct positions
+        function insertAdsAtPositions(posts, startPosition = 0) {
+            if (!showAds || adPositions.length === 0) {
+                return posts;
+            }
+
+            const postsWithAds = [...posts];
+            let adOffset = 0;
+
+            adPositions.forEach(ad => {
+                const adjustedPosition = ad.position - startPosition;
+                if (adjustedPosition > 0 && adjustedPosition <= postsWithAds.length) {
+                    const adBlock = createAdBlock(ad);
+                    postsWithAds.splice(adjustedPosition + adOffset, 0, adBlock);
+                    adOffset++;
+                }
+            });
+
+            return postsWithAds;
+        }
+
         function fetchEvents(reset = false) {
             // Show loader at the start of fetch
             showLoaderElement();
@@ -87,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             gridContainer.innerHTML = '<p>No events found.</p>';
                         }
                     } else {
-                        data.forEach(post => {
+                        const posts = data.map(post => {
                             // console.log('Fetched data:', post.wishlist_html);
                             const box = document.createElement('div');
                             box.className = 'bazo-event-card';
@@ -121,12 +157,21 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </div>
                             `;
 
-                            gridContainer.appendChild(box);
-
-                            if (typeof tinvwl_add_to_wishlist === 'function') {
-                                tinvwl_add_to_wishlist();
-                            }
+                            return box;
                         });
+
+                        // Insert ads at correct positions
+                        const postsWithAds = insertAdsAtPositions(posts, reset ? 0 : (page - 1) * postsToShow);
+
+                        // Append all elements to the grid
+                        postsWithAds.forEach(element => {
+                            gridContainer.appendChild(element);
+                        });
+
+                        // Initialize wishlist functionality for new elements
+                        if (typeof tinvwl_add_to_wishlist === 'function') {
+                            tinvwl_add_to_wishlist();
+                        }
                     }
 
                     // Call this function after every fetch to update the button's visibility
@@ -168,6 +213,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filterIcon && filtersContainer) {
             filterIcon.addEventListener('click', function () {
                 filtersContainer.classList.toggle('is-visible');
+            });
+        }
+
+        // Event listener for the close button
+        if (filterCloseBtn && filtersContainer) {
+            filterCloseBtn.addEventListener('click', function () {
+                filtersContainer.classList.remove('is-visible');
             });
         }
 

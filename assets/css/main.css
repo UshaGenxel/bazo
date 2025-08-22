@@ -2,15 +2,14 @@ body {
     font-family: "Plus Jakarta Sans", sans-serif;
 }
  
-.bazo__header_menu .bazo__header_nav a {
-    text-decoration: none !important;
-}
-
 /* Wrapper: Filter icon + filters popup */
 .wp-block-bazo-event-grid {
     max-width: 1225px;
 }
 
+.wp-block-post-title{
+	display: none;
+}
 .bazo__about_us{
     max-width:1162px;
     width:100%;
@@ -31,6 +30,10 @@ body {
     color: #000000;
 }
 
+.bazo__header_menu .bazo__header_nav a {
+  	text-decoration: none;
+}
+
 .bazo__top_footer .bazo__email_update .es-form-field-container {
     position: relative;
 }
@@ -40,7 +43,7 @@ body {
 }
  
 .bazo__top_footer .bazo__email_update .es-form-field-container .gjs-row .gjs-cell input.es-email {
-    position: absolute;
+ 	position: absolute;
     top: 0;
     right:0;
     width: 100%;
@@ -54,11 +57,11 @@ body {
     top: 0;
     right:0;
     max-width: 125px;
-    width: 100%;
+  	width: 100%;
     padding: 15px 25px;
     border: 1px solid #8d8d8e;
     border-radius: 25px;
-    background:transparent;
+    background: #FFFFFF;
 }
 
 /* From Uiverse.io by abrahamcalsin */ 
@@ -177,13 +180,117 @@ body {
     }
   }
   
-/* Product Tags */
-.bazo-product-tags {
-    margin-top: 24px;
+
+
+/* Event Meta Block Styles */
+
+
+/* ACF Map Styles */
+.acf-map {
+    width: 100%;
+    height: 280px;
+    border: 1px solid #ccc;
+    margin: 0;
 }
 
-.bazo-product-tags .wp-block-post-terms__separator {
-    margin: 0 4px;
+.acf-map img {
+    max-width: inherit !important;
+}
+
+.acf-map .marker {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 12px;
+    max-width: 200px;
+}
+
+/* Review Section Block Styles */
+.bazo-review-section {
+    margin-bottom: 32px;
+}
+
+.bazo-review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.bazo-review-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.bazo-review-icon {
+    color: #666;
+}
+
+.bazo-review-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.bazo-review-action {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.bazo-review-action:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.bazo-review-action.active {
+    background: #0073aa;
+    color: #fff;
+}
+
+.bazo-review-options {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.bazo-review-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s ease;
+}
+
+.bazo-review-option:hover {
+    background: #e0e0e0;
+}
+
+.bazo-review-option.bazo-review-note {
+    cursor: default;
+}
+
+.bazo-review-option.bazo-review-note textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 60px;
 }
  
 /* Wrapper: Filter icon + filters popup */
@@ -194,56 +301,87 @@ body {
 }
 
 .wp-block-bazo-event-grid .bazo-event-filter-icon-button {
-    background: none;
-    border: none;
+  	display: flex;
+    justify-content: center;
+	align-items: center;
+    background: #FFFFFF;
     cursor: pointer;
-    padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     color: #333;
+    padding: 16px;
+  	border: none;
+    border-radius: 50%;
+	box-shadow: 0 0 10px -4px rgb(0 0 0 / 80%);	
 }
 
 .wp-block-bazo-event-grid .bazo-event-filter-icon-button svg {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
 }
 
 .wp-block-bazo-event-grid .bazo-event-filters {
     display: none;
-    position: absolute;
-    top: 40px;
-    right: 0;
-    z-index: 10;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    flex-direction: column;
-    gap: 10px;
-    width: 250px;
-    max-width: 90vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  	padding: 10px 0;
+ 	overflow-y: auto;
+    z-index: 9999;
 }
 
+.wp-block-bazo-event-grid .bazo-event-filters-category {
+	max-width:225px;
+  	width: 100%;
+  	padding: 25px;
+  	display: flex;
+    flex-direction: column;
+  	background: #FFFFFF;
+  	border-radius: 30px;
+ 	max-height: 70vh;
+    overflow-y: auto;
+  	
+}
 .wp-block-bazo-event-grid .bazo-event-filters.is-visible {
     display: flex;
 }
 
 .wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filter-button {
     width: 100%;
-    justify-content: flex-start;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 8px 12px;
+    padding: 13px 20px;
     cursor: pointer;
-    border-radius: 4px;
-    text-transform: capitalize;
-    color: #333;
+    color: #8D8D8E;
+  	border: none;
+  	background: none;
+  	text-transform: capitalize;
+	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 14PX;
+    font-weight: 700;
+  	text-align: start;
 }
 
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filter-button:hover,
 .wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filter-button.active {
-    background-color: #0073aa;
-    color: #fff;
-    border-color: #0073aa;
+    color: #000000;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filters-header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filters-header .bazo-event-filter-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
 }
 
 /* Grid container (responsive) */
@@ -421,4 +559,386 @@ body {
 .bazo-load-more-button:hover {
     background-color: #000000;
     color: #FFFFFF;
+}
+
+.bazo-product-page-container,
+.bazo-product-page-container .wp-block-bazo-product-header {
+    max-width: 1225px !important;
+    width: 100%;
+}
+
+.bazo-product-page-container .alignwide.wp-block-post-featured-image {
+    max-width: 475px;
+    width:100%;
+    max-height: 250px;
+    height:250px;
+    margin-bottom: 30px;
+}
+
+.bazo-product-page-container .alignwide.wp-block-post-featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta {
+    max-width: 850px;
+    width: 100%;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-card  {
+    box-shadow: none;
+    border: 1px solid #C1C1C1;
+  	border-radius: 10px;
+  	background: #FFFFFF;
+ 	margin-bottom: 30px;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-card .bazo-event-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-card .bazo-event-meta-list .bazo-event-meta-value {
+  	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000;
+}
+
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-actions {
+    display: flex;
+	flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  	margin-top: 0;
+    margin-bottom: 30px;
+  	padding: 0;
+  	border: 0;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action {
+    background: #FFFFFF;
+    border: 1px solid #8D8D8D;
+    border-radius: 50px;
+    padding: 7px 25px;
+    text-decoration: none;
+    color: #000000;
+  	font-family: "Urbanist", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action:hover {
+	background: #8D8D8E;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-actions svg {
+    width: 18px;
+    height: 18px;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-description {
+  	margin-top: 0;
+    margin-bottom: 60px;
+  	padding: 0;
+  	border: 0;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-description h2 {
+	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22PX;
+    font-weight: 700;
+  	color: #000000;
+  	margin-bottom: 0;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-description {
+	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16PX;
+    font-weight: 400;
+  	color: #000000;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-map {
+    margin-top: 0;
+    margin-bottom: 30px;
+  	padding: 0;
+  	border: 0;
+}
+
+.bazo-product-page-container .bazo-product-tags {
+  	max-width: 850px;
+    width: 100%;
+  	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 20PX;
+    font-weight: 500;
+	margin-bottom: 30px;
+}
+
+.bazo-product-page-container .bazo-product-tags span.wp-block-post-terms__prefix {
+  	color: #8D8D8E;
+}
+
+.bazo-product-page-container .bazo-product-tags a {
+	color: #000000;
+    text-decoration: none;
+}
+
+.bazo-product-page-container .bazo-product-tags .wp-block-post-terms__separator {
+    margin: 0 2px;
+  	color: #8D8D8E;
+}
+
+.bazo-event-meta-description {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+}
+
+.bazo-event-meta-description h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 12px 0;
+    text-transform: capitalize;
+}
+
+.bazo-event-meta-description p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+}
+
+.bazo-product-page-container .bazo-product-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  	flex-wrap: wrap;
+  	gap: 20px;
+    margin-bottom: 50px;
+    padding: 0;
+}
+
+.bazo-product-page-container .bazo-product-header .bazo-product-header-back {
+   	display: flex;
+    align-items: center;
+  	gap: 0px;
+}
+
+.bazo-product-page-container .bazo-product-header .bazo-product-header-back svg {
+  	width: 35px !important;
+    height: 35px !important;
+  	fill: #000000 !important;
+}
+
+.bazo-product-page-container .bazo-product-header .bazo-product-header-back span {
+  	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 12PX;
+    font-weight: 700;
+   	color: #000000;
+}
+
+.bazo-product-page-container .bazo-product-header .bazo-product-header-title {
+  	font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22PX;
+    font-weight: 700;
+   	color: #000000;
+}
+
+.bazo-product-page-container .bazo-product-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-share {
+ 	display: flex;
+    align-items: center;
+  	justify-content: center;
+    cursor: pointer;
+    color: #8D8D8E;	
+	padding: 0;
+    transition: all 0.2s ease;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-share svg {
+ 	width: 24px !important;
+  	height: 27px !important;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation {
+    display: flex;
+    align-items: center;
+  	gap: 0;
+  	padding: 0;
+  	background: #FFFFFF;
+  	border: 1px solid #8D8D8E;
+    border-radius: 50px;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .ti-wishlist-container a.tinvwl_add_to_wishlist_button {
+    width: 24px;
+  	height: 27px;
+  	display: flex;
+    align-items: center;
+  	justify-content: center;
+  	margin-right: 10px;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .ti-wishlist-container a.tinvwl_add_to_wishlist_button img {
+	max-width: 24px !important;
+	max-height: 27px !important;
+  	object-fit: cover;
+  
+}
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  a,
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  span {
+    display: flex;
+    padding: 10px;
+    border-right: 1px solid #8D8D8E;
+    align-items: center;
+  	color: #000000 !important;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  a svg,
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  span svg{
+    width: 25px !important;
+    height: 25px !important;
+}
+
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  a:last-child,
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  span:last-child{
+  	border-right: 0;
+}
+
+@media (max-width:560px) {
+  	.bazo-product-page-container .bazo-product-header {
+      flex-direction: column;
+      align-items: flex-start;
+	}
+  
+  	.bazo-product-page-container .bazo-product-header .bazo-product-header-title {
+      	width: 100%;
+      	text-align: center;
+    }
+  
+  	.bazo-product-page-container .bazo-product-header-actions {
+      	width: 100%;
+      	justify-content: flex-end;
+	}
+}
+
+.bazo__legal,
+.bazo__privacya {
+  	max-width: 1225px;
+  	width: 100%;
+}
+
+.bazo__legal p,
+.bazo__privacya p {
+  	overflow-wrap: break-word;
+    word-break: break-word;
+  	white-space: normal;
+}
+
+.bazo-product-page-container .bazo-share-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, .5);
+    padding: 0;
+    z-index: 999;
+    transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+  	display: flex;
+  	justify-content: center;
+    align-items: center;  
+    overflow-y: auto; 
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-content {
+	position: relative;
+	max-width: 360px !important;
+  	min-width: unset;
+	padding: 30px;
+	top: 0;
+	left: 0;
+	border-radius: 30px;
+	background-color: #fff;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+	transition: transform .3s ease-in-out, opacity .3s ease-in-out;
+	transform: scale(0.9);
+	opacity: 1;
+	max-height: 80vh;
+    overflow-y: auto; 
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-content  .bazo-share-modal-header button {
+  	cursor: pointer;
+    width: 100%;
+    text-align: end;
+  	padding: 0;
+  	margin: 0;
+    border: none;
+    background: none;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-content  .bazo-share-modal-header h3 {
+    width: 100%;
+    text-align: center;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  	margin: 10px 0;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-body .bazo-share-modal-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-body .bazo-share-modal-title h4 {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-body .bazo-share-modal-title p {
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  	margin-bottom: 20px;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-footer button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 15px;
+    background: #FFFFFF;
+    border: 1px solid #8D8D8E;
+    border-radius: 50px;
+}
+
+.bazo-product-page-container .bazo-share-modal .bazo-share-modal-footer button:hover {
+    background: #8D8D8E;
 }

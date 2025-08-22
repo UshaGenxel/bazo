@@ -170,7 +170,7 @@ class Bazo_Theme {
     }
 
 	public function enqueue_scripts() {
-		$theme_version 			= wp_get_theme()->get( 'Version' );
+		$theme_version 			= time(); //wp_get_theme()->get( 'Version' );
 		wp_enqueue_style( 'main', get_theme_file_uri( '/assets/css/main.css' ), array(), $theme_version, 'all' );
 
 		// wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY', [], null, true );
@@ -179,7 +179,7 @@ class Bazo_Theme {
 
 	public function load_editor_assets() {
 		if ( is_admin() ) :
-			$theme_version 			= wp_get_theme()->get( 'Version' );
+			$theme_version 			= time(); //wp_get_theme()->get( 'Version' );
 			wp_enqueue_style( 'main', get_theme_file_uri( '/assets/css/main.css' ), array(), $theme_version, 'all' );
 		endif;
 	}
