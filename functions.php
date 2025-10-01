@@ -186,3 +186,4 @@ function cafes_shortcode() {
 }
 add_shortcode('cafes', 'cafes_shortcode');
 
+
