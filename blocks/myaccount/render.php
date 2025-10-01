@@ -15,8 +15,8 @@ $register_nonce = wp_create_nonce( 'bazo-register-nonce' );
 $forgot_password_nonce = wp_create_nonce( 'bazo-forgot-password-nonce' );
 
 // Define attribute variables
-$yourprofileurl = $attributes['yourprofileurl'] ?? 'my_account';
-$savedeventsurl = $attributes['savedeventsurl'] ?? 'save_event';
+$yourprofileurl = $attributes['yourprofileurl'] ?? 'profile-form';
+$savedeventsurl = $attributes['savedeventsurl'] ?? 'wishlist';
 
 ?>
 <div <?php echo get_block_wrapper_attributes(); ?>>
@@ -85,7 +85,8 @@ $savedeventsurl = $attributes['savedeventsurl'] ?? 'save_event';
             
             <div id="signup-form-wrapper" class="form-wrapper hidden">
                 <div class="text-center">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/signup.png" alt="BAZO Logo" class="mx-auto mb-4 rounded-full">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/forget.png" alt="BAZO Logo" class="mx-auto">
+                    <p class="bazo_sign_up_text_heading"><?php echo esc_html__( 'enjoy the journey', 'bazo' ); ?></p>
                     <h2 class="form-title"><?php echo esc_html__( 'Create an account', 'bazo' ); ?></h2>
                     <div id="signup-message" class="form-message"></div>
                 </div>
@@ -142,18 +143,32 @@ $savedeventsurl = $attributes['savedeventsurl'] ?? 'save_event';
             <button class="close-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6L6 18"/><path d="m6 6 12 12"/></svg>
             </button>
+            <?php
+            $profile_url = get_home_url( null, $yourprofileurl );
+            $saved_url   = get_home_url( null, $savedeventsurl );
+            $current_url = ( ( isset( $_SERVER['HTTPS'] ) && 'on' === $_SERVER['HTTPS'] ) ? 'https' : 'http' ) . '://' . ( $_SERVER['HTTP_HOST'] ?? '' ) . ( $_SERVER['REQUEST_URI'] ?? '' );
+
+            // Normalize URLs for comparison (remove query strings, trailing slashes)
+            $normalize = function ( $url ) {
+                $base = strtok( (string) $url, '?' );
+                return untrailingslashit( (string) $base );
+            };
+
+            $is_profile_active = $normalize( $current_url ) === $normalize( $profile_url );
+            $is_saved_active   = $normalize( $current_url ) === $normalize( $saved_url );
+            ?>
             <div class="my-account-menu">
                 <ul>
-                    <li>
-                        <a href="<?php echo esc_url( get_home_url( null, $yourprofileurl ) ); ?>">
+                    <li<?php echo $is_profile_active ? ' class="active"' : ''; ?>>
+                        <a href="<?php echo esc_url( $profile_url ); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                         </svg>
                         <span><?php echo esc_html__( 'your profile', 'bazo' ); ?></span>
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo esc_url( get_home_url( null, $savedeventsurl ) ); ?>">
+                    <li<?php echo $is_saved_active ? ' class="active"' : ''; ?>>
+                        <a href="<?php echo esc_url( $saved_url ); ?>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
                         </svg>
@@ -167,6 +182,21 @@ $savedeventsurl = $attributes['savedeventsurl'] ?? 'save_event';
                         <span><?php echo esc_html__( 'log out', 'bazo' ); ?></span>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="verification-modal" class="modal-container verification-modal">
+        <div class="modal-content">
+            <button class="close-modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6L6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+            <div class="verification-wrapper">
+                <div class="text-center">
+                    <h2 class="form-title"><?php echo esc_html__( 'Almost done!', 'bazo' ); ?></h2>
+                    <p class="verification-text"><?php echo esc_html__( 'We just emailed you. Simply click the verification link in your inbox to activate your account.', 'bazo' ); ?></p>
+                    <p class="verification-note"><?php echo esc_html__( 'Note: If you don\'t see it, check your spam folder just in case.', 'bazo' ); ?></p>
+                </div>
             </div>
         </div>
     </div>

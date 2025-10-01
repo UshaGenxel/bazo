@@ -69,12 +69,12 @@
 		right: 16px;
 		background: none;
 		border: none;
-		color: #9ca3af;
+		color: #8d8d8e;
 		cursor: pointer;
 		transition: color 0.3s;
 
 		&:hover {
-			color: #4b5563;
+			color: #000000;
 		}
 	}
 
@@ -97,6 +97,8 @@
 			gap: 15px;
 	  }
 	}
+
+	
 	
 	.text-center {
 		text-align: center;
@@ -142,10 +144,15 @@
 		font-family: 'Plus Jakarta Sans', sans-serif;
 		font-size: 14px;
 		font-weight: 400;
-		color: #8D8D8E;
+		color: #000000;
 		padding: 15px 30px;
 		border: 1px solid #d1d5db;
 		border-radius: 45px;
+		
+		&::placeholder {
+			color: #8D8D8E !important;
+			opacity: 1;
+		}
 	}
 
 	.input-field:focus {
@@ -164,7 +171,7 @@
 	}
 
 	.black-button {
-		width: 175px !important;    
+		width: 200px !important;    
 		display: flex !important;
 		align-items: center !important;
 		justify-content: center !important;
@@ -176,9 +183,12 @@
 		margin: auto;
 		background-color: #000000 !important;
 		color: #FFFFFF !important;
+		box-shadow: none !important;
+		border: 1px solid #000000 !important;
 
 		&:hover {
-			background-color: #000000cc;
+			background-color: #FFFFFF !important;
+			color: #000000 !important;
 		}
 	}
 	.bazo_sign_up {
@@ -251,6 +261,7 @@
             padding: 0;
 			height: 541px;
         }
+		
     }
  
     .my-account-menu {
@@ -265,13 +276,15 @@
             padding: 15px 0 10px 25px;
             cursor: pointer;
             border-bottom: 1px solid #E5E5E5;
+			color: #8D8D8E;
+			transition: 0.3s;
  
             a {
                 font-family: "Plus Jakarta Sans", sans-serif;
                 font-size: 16px;
                 font-weight: 500;
                 text-decoration: none;
-                color: #000000;
+                color: #8D8D8E;
 				display: flex;
 				align-items: center;
 
@@ -280,6 +293,7 @@
                     circle {
                         stroke: #8D8D8E;
                         color: #8D8D8E;
+						transition: 0.3s;
                     }
                     path {
                         stroke: #8D8D8E;
@@ -293,7 +307,16 @@
                 font-size: 16px;
                 font-weight: 500;
                 text-decoration: none;
-                color: #000000;
+                color: #8D8D8E;
+				transition: 0.3s;
+
+				&:hover {
+					color: #000000;
+				}
+
+				&.active {
+					color: #000000;
+				}
             }
  
             svg {
@@ -303,8 +326,108 @@
                     stroke: #8D8D8E;
                     color: #8D8D8E;
                 }
+
+				&:hover {
+					stroke: #000000;
+					color: #000000;
+				}
+				
+				&.active {
+					stroke: #000000;
+					color: #000000;
+				}
             }
+
+			&:hover {
+				a {
+					color: #000000;
+	
+					svg {
+						circle {
+							stroke: #000000;
+							color: #000000;
+						}
+						path {
+							stroke: #000000;
+							color: #000000;
+						}
+					}
+				}
+				span {
+					color: #000000;
+				}
+				svg {				   
+					path {
+						stroke: #000000;
+						color: #000000;
+					}
+
+				}
+			}
+
+			&.active {
+				a {
+					color: #000000;
+	
+					svg {
+						circle {
+							stroke: #000000;
+							color: #000000;
+						}
+						path {
+							stroke: #000000;
+							color: #000000;
+						}
+					}
+				}
+				span {
+					color: #000000;
+				}
+				svg {				   
+					path {
+						stroke: #000000;
+						color: #000000;
+					}
+
+				}
+			}
         }
     }
+
+	.verification-modal {
+		.verification-wrapper {
+			font-family: 'Plus Jakarta Sans', sans-serif;
+			color: #000000;
+			
+			.form-title {
+				font-size: 22px;
+				font-weight: 700;
+				text-transform: lowercase;
+				margin-bottom: 10px;
+			}
+			
+			.verification-text {
+				font-size: 16px;
+				font-weight: 400;
+				margin-bottom: 10px;
+			}
+			
+			.verification-note {
+				font-size: 14px;
+				font-weight: 400;
+				color: #8D8D8E;
+				margin-top: 10px;
+			}
+		}
+	}
+}
+
+.bazo_sign_up_text_heading {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	font-size: 22px;
+	font-weight: 600;
+	color: #000000;
+	text-transform: lowercase;
+	margin: 0;
 }
 

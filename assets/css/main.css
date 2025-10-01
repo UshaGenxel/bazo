@@ -32,6 +32,11 @@ body {
 
 .bazo__header_menu .bazo__header_nav a {
   	text-decoration: none;
+	transition-duration: 0.5s;
+}
+
+.bazo__header_menu .bazo__header_nav a:hover {
+	color: #000000
 }
 
 .bazo__top_footer .bazo__email_update .es-form-field-container {
@@ -62,6 +67,13 @@ body {
     border: 1px solid #8d8d8e;
     border-radius: 25px;
     background: #FFFFFF;
+  	color: #000000;
+  	transition: all 0.3s ease-in-out;
+}
+
+.bazo__top_footer .bazo__email_update .es-form-field-container .gjs-row:last-child .gjs-cell input:hover {
+	background: #000000;
+  	color: #FFFFFF;
 }
 
 /* From Uiverse.io by abrahamcalsin */ 
@@ -295,28 +307,25 @@ body {
  
 /* Wrapper: Filter icon + filters popup */
 .wp-block-bazo-event-grid .bazo-event-filters-wrapper {
-    position: relative;
+    position: sticky;
+  	top: 136px;
+  	background: #FFFFFF;
     display: flex;
     justify-content: flex-end;
+  	padding: 10px 0;
+  	z-index: 1;
 }
 
 .wp-block-bazo-event-grid .bazo-event-filter-icon-button {
-  	display: flex;
-    justify-content: center;
-	align-items: center;
-    background: #FFFFFF;
-    cursor: pointer;
-    margin-bottom: 50px;
-    color: #333;
-    padding: 16px;
+    background: transparent;
   	border: none;
-    border-radius: 50%;
-	box-shadow: 0 0 10px -4px rgb(0 0 0 / 80%);	
+    cursor: pointer;
+  	padding: 0;
 }
 
-.wp-block-bazo-event-grid .bazo-event-filter-icon-button svg {
-    width: 16px;
-    height: 16px;
+.wp-block-bazo-event-grid .bazo-event-filter-icon-button:focus-visible {
+    border:none;
+    outline:0;
 }
 
 .wp-block-bazo-event-grid .bazo-event-filters {
@@ -326,17 +335,16 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     display: none;
     align-items: center;
     justify-content: center;
-  	padding: 10px 0;
  	overflow-y: auto;
     z-index: 9999;
 }
 
 .wp-block-bazo-event-grid .bazo-event-filters-category {
-	max-width:225px;
+	max-width:260px;
   	width: 100%;
   	padding: 25px;
   	display: flex;
@@ -358,7 +366,7 @@ body {
     color: #8D8D8E;
   	border: none;
   	background: none;
-  	text-transform: capitalize;
+  	text-transform: lowercase;
 	font-family: "Plus Jakarta Sans", sans-serif;
     font-size: 14PX;
     font-weight: 700;
@@ -382,8 +390,12 @@ body {
     cursor: pointer;
     padding: 0;
     margin: 0;
+  	color: #8D8D8E;
+  	transition: all 0.3s ease;
 }
-
+.wp-block-bazo-event-grid .bazo-event-filters .bazo-event-filters-header .bazo-event-filter-close:hover {
+  	color: #000000;
+}
 /* Grid container (responsive) */
 .bazo-event-card {
     border-right: 0.5px solid #000;
@@ -494,7 +506,7 @@ body {
  
 .bazo-event-card-image img {
     width: 100%;
-    height: 160px;
+    height: 258px;
     object-fit: cover;
     display: block;
 }
@@ -529,7 +541,12 @@ body {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.4;
-    margin: 0;
+    margin: 10px 0 0 0;
+  	display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
  
 .bazo-event-load-more {
@@ -568,7 +585,7 @@ body {
 }
 
 .bazo-product-page-container .alignwide.wp-block-post-featured-image {
-    max-width: 475px;
+    max-width: 250px;
     width:100%;
     max-height: 250px;
     height:250px;
@@ -592,12 +609,15 @@ body {
   	border-radius: 10px;
   	background: #FFFFFF;
  	margin-bottom: 30px;
+  	display:flex;
+  	justify-content: center;
 }
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-card .bazo-event-meta-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
+  	margin: 0 auto;
 }
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-card .bazo-event-meta-list .bazo-event-meta-value {
@@ -634,13 +654,35 @@ body {
 }
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action:hover {
-	background: #8D8D8E;
+	background: #000;
+	color: #FFFFFF;
 }
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-actions svg {
     width: 18px;
     height: 18px;
 }
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action-maps:hover svg path {
+	stroke: #FFFFFF;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action-web:hover svg path {
+	fill: #FFFFFF;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action-ticket:hover svg path {
+	fill: #FFFFFF;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action-instagram:hover svg path {
+	stroke: #FFFFFF;
+}
+
+.bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-action-email:hover svg path {
+	fill: #FFFFFF;
+}
+
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-description {
   	margin-top: 0;
@@ -655,6 +697,7 @@ body {
     font-weight: 700;
   	color: #000000;
   	margin-bottom: 0;
+  	text-transform: lowercase;
 }
 
 .bazo-product-page-container .wp-block-bazo-event-meta .bazo-event-meta-description {
@@ -729,6 +772,7 @@ body {
    	display: flex;
     align-items: center;
   	gap: 0px;
+  	width: 200px;
 }
 
 .bazo-product-page-container .bazo-product-header .bazo-product-header-back svg {
@@ -741,7 +785,7 @@ body {
   	font-family: "Plus Jakarta Sans", sans-serif;
     font-size: 12PX;
     font-weight: 700;
-   	color: #000000;
+   	color: #000000;text-transform: lowercase;
 }
 
 .bazo-product-page-container .bazo-product-header .bazo-product-header-title {
@@ -753,8 +797,10 @@ body {
 
 .bazo-product-page-container .bazo-product-header-actions {
     display: flex;
+ 	justify-content: flex-end;
     align-items: center;
     gap: 15px;
+  	width: 200px;
 }
 
 
@@ -781,6 +827,7 @@ body {
   	background: #FFFFFF;
   	border: 1px solid #8D8D8E;
     border-radius: 50px;
+    overflow: hidden;
 }
 
 .bazo-product-page-container .bazo-product-header-actions .ti-wishlist-container a.tinvwl_add_to_wishlist_button {
@@ -805,7 +852,14 @@ body {
     padding: 10px;
     border-right: 1px solid #8D8D8E;
     align-items: center;
+  	background: #FFFFFF;
   	color: #000000 !important;
+}
+
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  a:hover,
+.bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  span:hover {
+	background: #000000;
+	color: #FFFFFF !important;
 }
 
 .bazo-product-page-container .bazo-product-header-actions .bazo-product-header-navigation  a svg,
@@ -820,7 +874,7 @@ body {
   	border-right: 0;
 }
 
-@media (max-width:560px) {
+@media (max-width:768px) {
   	.bazo-product-page-container .bazo-product-header {
       flex-direction: column;
       align-items: flex-start;
@@ -940,7 +994,8 @@ body {
 }
 
 .bazo-product-page-container .bazo-share-modal .bazo-share-modal-footer button:hover {
-    background: #8D8D8E;
+    background: #000000;
+    color: #FFFFFF;
 }
 
 @media only screen and (max-width: 768px) {
@@ -970,35 +1025,6 @@ body {
 	background: #8D8D8E;
 }
 
-.tinv-wishlist table.tinvwl-table-manage-list {
-    border: none;
-    border-radius:5px;
-}
-
-.tinv-wishlist table.tinvwl-table-manage-list thead tr th,
-.tinv-wishlist table.tinvwl-table-manage-list tbody tr td {
-    border: 1px solid #8D8D8E !important;
-    border-radius: 3px;
-}
-
-.tinv-wishlist table.tinvwl-table-manage-list tfoot {
-    display: none;
-}
-
-@media (max-width:768px) {
-    .tinv-wishlist table.tinvwl-table-manage-list tbody tr td {
-        border: none !important;
-        border: solid #8d8d8e !important;
-        border-width: 1px 1px 0 1px !important;
-        border-radius: 0;
-        padding: 10px;
-    }
-
-    .tinv-wishlist table.tinvwl-table-manage-list tbody tr td:last-child {
-        border-width: 0 1px 1px 1px !important;
-    }
-}
-
 .es_spinner_image{
    	position: relative;
   	margin-top: -35px;
@@ -1008,4 +1034,261 @@ body {
   	position: absolute;
     right: 45px;
     top: 0;
+}
+
+.bazo__footer_terms ul li a {
+    text-decoration: none;
+}
+
+.bazo__footer_terms ul li a:hover {
+    text-decoration: underline;
+}
+
+.bazo__footer_terms ul li a {
+    padding: 0 10px;
+    border-right: 1px solid #8d8d8e;
+}
+
+.bazo__footer_terms ul li:last-child a {
+    padding: 0 0 0 10px;
+    border: none;
+}
+
+.bazo__wishlist_container {
+    max-width: 1225px;
+    width: 100%;
+}
+
+.bazo__wishlist_title {
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.bazo__wishlist_container table.bazo__wishlist_table {
+	border: none;
+  	border-spacing: 0;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-remove,
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail, 
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date{
+    padding: 35px;
+  	border-width: 0 1px 1px 0;
+  	border-color: #8d8d8e;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name {
+    border-width: 0 0 1px 0;
+  	border-color: #8d8d8e;
+    padding: 35px 50px;
+    gap: 0;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-remove button {
+    background: transparent;
+}
+
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail a img {
+    max-width: 100px;
+    min-width: 100px;
+    height: auto;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date .bazo-event-card-date {
+    white-space: nowrap;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    coloe: #000000 !important;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date .bazo-event-card-date:last-child {
+    margin-bottom: 0px;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+    text-decoration: none;
+}
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name p.bazo-event-card-category {
+    font-size: 10px;
+    font-weight: 400;
+    color: #000000;
+    margin: 0 0 5px 0;
+ }
+
+.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name .tinvwl-event-description {
+    max-width: 500px;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #000000;
+    margin: 0 0 5px 0;
+  	display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ }
+
+
+@media (max-width:1024px) and (min-width:769px) {
+
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-remove,
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail, 
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date{
+        padding: 10px;
+    }
+    
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name {
+        padding: 10px 20px;
+    }
+    
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail a img {
+        max-width: 80px;
+        min-width: 80px;
+        height: auto;
+    }       
+}
+
+@media (max-width:768px) {
+
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-remove,
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail, 
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date{
+        padding: 5px 0 10px 0;
+        border-width: 0;
+    }
+    
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name {
+        padding: 0 0 15px 0;
+        border-width: 0 0 1px 0;
+    }
+    
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-thumbnail a img {
+        max-width: 80px;
+        min-width: 80px;
+        height: auto;
+    }  
+  
+  	.bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-date .bazo-event-card-date {
+        margin-bottom: 10px;
+    }
+
+    .bazo__wishlist_container .bazo__wishlist_table tbody tr td.product-name .tinvwl-event-description {
+        max-width: 100%;
+    }
+}
+
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner {
+    max-width: 260px;
+    width: 100%;
+    padding: 40px;
+    border-radius: 30px;
+    background-color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05);
+    transition: transform .3s ease-in-out, opacity .3s ease-in-out;
+    /*transform: scale(0.95);*/
+    opacity: 1;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner i.icon_big_heart_check,
+.tinv-wishlist .tinv-modal .tinv-modal-inner i.icon_big_times {
+    display: none !important;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinv-txt {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 20px 0;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_view {
+  	width: 100%;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 15px 0px 20px 0px;
+    background-color: #FFFFFF;
+    color: #000000;
+  	border: 1px solid #000000;
+    border-radius: 100px;
+  	margin:0;
+  	text-transform: lowercase;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_view:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_close {
+  	position: absolute;
+	top: 10px;
+	right: 16px;
+	width: fit-content;
+	font-size: 0;
+	background:transparent;
+	padding: 0;
+	margin:0;
+  	transition: all 0.3s ease;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_close svg {
+	color: #8d8d8e;
+	transition: all 0.3s ease;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_close:hover svg {
+	color: #000000;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_close i {
+	font-size: 24px;
+  	color: #8D8D8E;
+  	padding: 0;
+	margin:0;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group button.tinvwl_button_close:hover i {
+  	color: #000000;
+}
+
+.tinv-wishlist .tinv-modal .tinv-modal-inner .tinvwl-buttons-group {
+    display: flex;
+  	flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+header.site-header.wp-block-template-part {
+	position: sticky;
+    TOP: 0;
+    z-index: 2;
+}
+
+.wishlist-wrap {
+    display:flex;
+    justify-content: end;
+}
+  
+.wishlist-wrap .bazo-event-card-wishlist-button img  {
+    max-width: 16px;
+    max-height: 16px;
 }

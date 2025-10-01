@@ -1,0 +1,1 @@
+(()=>{"use strict";const e=window.wp.blocks,o=window.wp.i18n,c=window.wp.blockEditor,t=JSON.parse('{"UU":"bazo/places-local"}');(0,e.registerBlockType)(t.UU,{edit:function(){return React.createElement("p",(0,c.useBlockProps)(),(0,o.__)("places Local – hello from the editor!","bazo"))}})})();

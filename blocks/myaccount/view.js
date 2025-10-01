@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const authModal = document.getElementById('auth-modal');
     const forgotPasswordModal = document.getElementById('forgot-password-modal');
     const myAccountModal = document.getElementById('my-account-modal');
+    const verificationModal = document.getElementById('verification-modal');
 
-    const allModals = [authModal, forgotPasswordModal, myAccountModal];
+    const allModals = [authModal, forgotPasswordModal, myAccountModal, verificationModal];
     
     const loginFormWrapper = document.getElementById('login-form-wrapper');
     const signupFormWrapper = document.getElementById('signup-form-wrapper');
@@ -177,10 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showMessage(signupMessage, data.data.message, 'success');
-                setTimeout(() => {
-                    window.location.reload(); // Reload the page on successful signup
-                }, 1000);
+                // Hide signup modal and show verification popup
+                hideModal(authModal);
+                setTimeout(() => showModal(verificationModal), 300);
             } else {
                 showMessage(signupMessage, data.data, 'error');
             }

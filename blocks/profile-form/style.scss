@@ -104,11 +104,16 @@
             font-family: "Plus Jakarta Sans", sans-serif;
             font-size: 14px;
             font-weight: 400;
-            color: #8d8d8e;
+            color: #000000;
             padding: 15px 30px;
             border: 1px solid #8D8D8E;
             border-radius: 45px;
             transition: all 0.3s ease;
+
+            &::placeholder {
+                color: #8D8D8E !important;
+                opacity: 1;
+            }
  
             &:focus {
                 border-color: #000000;

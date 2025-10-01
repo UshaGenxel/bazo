@@ -108,3 +108,11 @@
     max-width: 400px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
+
+.close-modal {
+    color: #8d8d8e;
+}
+
+.close-modal:hover {
+    color: #000000;
+}

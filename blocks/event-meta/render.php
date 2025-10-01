@@ -13,7 +13,9 @@ $product = function_exists('wc_get_product') ? wc_get_product($post_id) : null;
 
 // Get ACF fields if available
 $event_date = function_exists('get_field') ? get_field('event_date', $post_id) : '';
+$event_end_date = function_exists('get_field') ? get_field('event_end_date', $post_id) : '';
 $event_time = function_exists('get_field') ? get_field('event_time', $post_id) : '';
+$event_end_time = function_exists('get_field') ? get_field('event_end_time', $post_id) : '';
 $venue_name = function_exists('get_field') ? get_field('location', $post_id) : '';
 $venue_address = function_exists('get_field') ? get_field('location_address', $post_id) : '';
 $price_html = function_exists('get_field') ? get_field('prices', $post_id) : '';
@@ -46,7 +48,17 @@ ob_start();
 						<path d="M8.29431 13.7002H8.30329" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 						<path d="M8.29431 16.7002H8.30329" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
+					<?php if ($event_date == $event_end_date) : ?>
 					<span class="bazo-event-meta-value"><?php echo esc_html($event_date); ?></span>
+					<?php else : ?>
+						<span class="bazo-event-meta-value">
+							<?php echo esc_html($event_date); ?>
+							<?php if ($event_end_date) : ?>
+								<span class="bazo-event-card-date-separator">-</span>
+								<?php echo esc_html($event_end_date); ?>
+							<?php endif; ?>
+						</span>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			
@@ -56,7 +68,17 @@ ob_start();
 						<path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 						<path d="M15.7099 15.1798L12.6099 13.3298C12.0699 13.0098 11.6299 12.2398 11.6299 11.6098V7.50977" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
-					<span class="bazo-event-meta-value"><?php echo esc_html($event_time); ?></span>
+					<?php if ($event_time == $event_end_time) : ?>
+						<span class="bazo-event-meta-value"><?php echo esc_html($event_time); ?></span>
+					<?php else : ?>
+						<span class="bazo-event-meta-value">
+							<?php echo esc_html($event_time); ?>
+							<?php if ($event_end_time) : ?>
+								<span class="bazo-event-card-date-separator">-</span>
+								<?php echo esc_html($event_end_time); ?>
+							<?php endif; ?>
+						</span>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			
@@ -108,7 +130,7 @@ ob_start();
     <?php if ($show_actions) : ?>
 			<div class="bazo-event-meta-actions">
 				<?php if ($maps_url) : ?>
-					<a class="bazo-event-meta-action" href="<?php echo esc_url($maps_url); ?>" target="_blank" rel="noopener">
+					<a class="bazo-event-meta-action bazo-event-meta-action-maps" href="<?php echo esc_url($maps_url); ?>" target="_blank" rel="noopener">
 						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M1 12V6.53846C1 4.88161 2.34315 3.53846 4 3.53846H11M11 3.53846L8.5 1M11 3.53846L8.5 5.65385" stroke="black"/>
 						</svg>
@@ -116,7 +138,7 @@ ob_start();
                     </a>
 				<?php endif; ?>
                 <?php if ($web_url) : ?>
-                    <a class="bazo-event-meta-action" href="<?php echo esc_url($web_url); ?>" target="_blank" rel="noopener">
+                    <a class="bazo-event-meta-action bazo-event-meta-action-web" href="<?php echo esc_url($web_url); ?>" target="_blank" rel="noopener">
 						<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_4022_209)">
 							<path d="M14.375 7.49995C14.375 6.14712 13.9819 4.88445 13.3045 3.81969C13.2918 3.79301 13.2758 3.76829 13.2567 3.74611C12.0716 1.93487 10.0558 0.71445 7.75461 0.6302C7.72442 0.624963 7.6939 0.623963 7.66374 0.627075C7.60929 0.6258 7.5547 0.625 7.49995 0.625C7.41882 0.625 7.33815 0.626925 7.25769 0.629738C7.21222 0.622188 7.16532 0.623913 7.12001 0.635663C3.50521 0.833538 0.625 3.8366 0.625 7.49995C0.625 11.1643 3.50672 14.168 7.12287 14.3645C7.14931 14.3711 7.17612 14.3749 7.2029 14.3749C7.22072 14.3749 7.2384 14.373 7.25594 14.3702C7.33697 14.373 7.41824 14.3749 7.49996 14.3749C7.55477 14.3749 7.60941 14.3742 7.66391 14.3729C7.67522 14.374 7.68659 14.375 7.698 14.375C7.7164 14.375 7.73482 14.3729 7.75317 14.3698C11.4272 14.236 14.375 11.206 14.375 7.49995ZM1.29036 7.66097C1.31124 7.6651 1.33279 7.66736 1.35487 7.66736H3.48231C3.5018 8.69499 3.70482 9.60079 3.99484 10.3779H1.9966C1.568 9.56168 1.31538 8.63919 1.29036 7.66097ZM2.18172 4.29346H4.19694C3.79777 5.17623 3.56125 6.08925 3.49782 7.00408H1.35486C1.33882 7.00408 1.32318 7.0056 1.30775 7.0078C1.3855 6.02068 1.69499 5.09775 2.18172 4.29346ZM13.6922 7.0078C13.6768 7.0056 13.6611 7.00408 13.6451 7.00408H11.5216C11.4561 6.08915 11.2117 5.17614 10.7991 4.29346H12.8182C13.305 5.09775 13.6144 6.02068 13.6922 7.0078ZM10.8567 7.00408H7.83159V4.29346H10.0587C10.4642 5.07576 10.7774 5.9872 10.8567 7.00408ZM7.83159 3.63018V1.49339C8.25666 1.86241 9.02007 2.59985 9.67621 3.63018H7.83159ZM7.16831 1.41605V3.63018H5.2992C5.45367 3.3776 5.61096 3.148 5.76232 2.94421C6.31096 2.20541 6.86525 1.68009 7.16831 1.41605ZM7.16831 4.29346V7.00408H4.16302C4.24116 5.97386 4.55122 5.05781 4.93161 4.29346H7.16831ZM4.14522 7.66736H7.1683V10.3779H4.70134C4.35045 9.52558 4.1641 8.61959 4.14522 7.66736ZM7.16831 11.0412V13.6088C6.87134 13.3806 6.30891 12.9028 5.75291 12.1832C5.46905 11.8159 5.22277 11.4348 5.01359 11.0412H7.16831ZM7.83159 13.5404V11.0412H9.97446C9.75834 11.4335 9.50404 11.8134 9.21104 12.1796C8.68534 12.8368 8.15425 13.2922 7.83159 13.5404ZM7.83159 10.3779V7.66736H10.8747C10.8551 8.61952 10.6619 9.52551 10.2982 10.3779H7.83159V10.3779ZM11.5377 7.66736H13.6451C13.6672 7.66736 13.6887 7.6651 13.7096 7.66097C13.6846 8.63919 13.4319 9.56168 13.0033 10.3779H11.0079C11.3077 9.60071 11.5175 8.69495 11.5377 7.66736ZM12.3552 3.63018H10.4539C10.2381 3.25455 9.99165 2.88593 9.71439 2.52681C9.365 2.07429 9.01702 1.69966 8.71997 1.40889C10.1809 1.70103 11.4583 2.50721 12.3552 3.63018ZM6.18905 1.42794C5.9052 1.71671 5.57461 2.08641 5.24284 2.5312C4.976 2.88894 4.73866 3.2561 4.53087 3.63018H2.64474C3.52296 2.53058 4.76608 1.73486 6.18905 1.42794ZM2.39959 11.0412H4.27619C4.57627 11.6714 4.92275 12.1962 5.24474 12.6103C5.53654 12.9856 5.82781 13.2983 6.0879 13.5496C4.56987 13.1954 3.26426 12.2828 2.39959 11.0412ZM8.82332 13.5693C9.0965 13.3155 9.40416 12.9976 9.71239 12.6146C10.0464 12.1996 10.406 11.6734 10.7171 11.0412H12.6003C11.7189 12.3069 10.3791 13.2304 8.82332 13.5693Z" fill="black"/>
@@ -131,7 +153,7 @@ ob_start();
                     </a>
                 <?php endif; ?>
 				<?php if ($ticket_url) : ?>
-					<a class="bazo-event-meta-action" href="<?php echo esc_url($ticket_url); ?>" target="_blank" rel="noopener">
+					<a class="bazo-event-meta-action bazo-event-meta-action-ticket" href="<?php echo esc_url($ticket_url); ?>" target="_blank" rel="noopener">
 						<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_4022_264)">
 							<path d="M11.0881 3.05255L10.2576 2.47757C10.1465 2.40072 9.99419 2.42841 9.91729 2.53944C9.84039 2.65051 9.86813 2.80285 9.97916 2.87975L10.8097 3.45473C10.9197 3.53088 11.0739 3.50272 11.15 3.39289C11.2268 3.28176 11.1991 3.12942 11.0881 3.05255Z" fill="black"/>
@@ -152,7 +174,7 @@ ob_start();
                     </a>
 				<?php endif; ?>
 				<?php if ($instagram_url) : ?>
-					<a class="bazo-event-meta-action" href="<?php echo esc_url($instagram_url); ?>" target="_blank" rel="noopener">
+					<a class="bazo-event-meta-action bazo-event-meta-action-instagram" href="<?php echo esc_url($instagram_url); ?>" target="_blank" rel="noopener">
 						<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M5.87443 12.9163H9.12443C11.8328 12.9163 12.9161 11.833 12.9161 9.12467V5.87467C12.9161 3.16634 11.8328 2.08301 9.12443 2.08301H5.87443C3.1661 2.08301 2.08276 3.16634 2.08276 5.87467V9.12467C2.08276 11.833 3.1661 12.9163 5.87443 12.9163Z" stroke="black" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
 							<path d="M7.50057 9.39616C8.54761 9.39616 9.3964 8.54737 9.3964 7.50033C9.3964 6.45329 8.54761 5.60449 7.50057 5.60449C6.45353 5.60449 5.60474 6.45329 5.60474 7.50033C5.60474 8.54737 6.45353 9.39616 7.50057 9.39616Z" stroke="black" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -162,7 +184,7 @@ ob_start();
                     </a>
 				<?php endif; ?>
 				<?php if ($contact_email) : ?>
-					<a class="bazo-event-meta-action" href="mailto:<?php echo antispambot(esc_attr($contact_email)); ?>" target="_blank" rel="noopener">
+					<a class="bazo-event-meta-action bazo-event-meta-action-email" href="mailto:<?php echo antispambot(esc_attr($contact_email)); ?>" target="_blank" rel="noopener">
 						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M6.16 11.421C5.38533 11.421 4.65967 11.2927 3.983 11.036C3.30633 10.7793 2.71133 10.4153 2.198 9.944C1.68467 9.468 1.28333 8.908 0.994 8.264C0.704667 7.62 0.56 6.913 0.56 6.143C0.56 5.373 0.704667 4.64967 0.994 3.973C1.28333 3.29633 1.68467 2.70133 2.198 2.188C2.71133 1.67467 3.30633 1.27333 3.983 0.983999C4.65967 0.694666 5.38533 0.55 6.16 0.55C6.93933 0.55 7.66733 0.697 8.344 0.991C9.02067 1.28033 9.61333 1.68167 10.122 2.195C10.6353 2.70833 11.0343 3.30333 11.319 3.98C11.6083 4.652 11.753 5.373 11.753 6.143C11.753 6.54433 11.7017 6.94333 11.599 7.34C11.501 7.732 11.3563 8.089 11.165 8.411C10.9783 8.733 10.745 8.992 10.465 9.188C10.1897 9.37933 9.87467 9.475 9.52 9.475C9.24467 9.475 8.97167 9.41433 8.701 9.293C8.435 9.167 8.20867 8.99667 8.022 8.782C7.84 8.56733 7.735 8.32933 7.707 8.068C7.51567 8.32933 7.27067 8.53933 6.972 8.698C6.678 8.852 6.33967 8.929 5.957 8.929C5.44833 8.929 4.98167 8.80533 4.557 8.558C4.137 8.306 3.801 7.97 3.549 7.55C3.30167 7.12533 3.178 6.65633 3.178 6.143C3.178 5.62967 3.30167 5.163 3.549 4.743C3.801 4.323 4.137 3.98933 4.557 3.742C4.98167 3.49 5.44833 3.364 5.957 3.364C6.32567 3.364 6.671 3.43867 6.993 3.588C7.31967 3.73733 7.574 3.93567 7.756 4.183V3.504L8.673 3.665V7.571C8.673 7.781 8.75233 7.956 8.911 8.096C9.06967 8.23133 9.25167 8.299 9.457 8.299C9.71833 8.299 9.93067 8.18467 10.094 7.956C10.262 7.72267 10.3833 7.44033 10.458 7.109C10.5373 6.773 10.577 6.451 10.577 6.143C10.577 5.53167 10.4603 4.96 10.227 4.428C9.99833 3.89133 9.681 3.42233 9.275 3.021C8.869 2.615 8.4 2.29767 7.868 2.069C7.336 1.84033 6.76667 1.726 6.16 1.726C5.55333 1.726 4.98167 1.84033 4.445 2.069C3.913 2.29767 3.444 2.615 3.038 3.021C2.632 3.42233 2.31233 3.89133 2.079 4.428C1.85033 4.96 1.736 5.53167 1.736 6.143C1.736 6.75433 1.85033 7.312 2.079 7.816C2.30767 8.31533 2.625 8.747 3.031 9.111C3.437 9.475 3.906 9.75733 4.438 9.958C4.97467 10.154 5.54867 10.252 6.16 10.252V11.421ZM6.041 8.012C6.38633 8.012 6.685 7.91867 6.937 7.732C7.189 7.54533 7.385 7.305 7.525 7.011C7.665 6.71233 7.735 6.39967 7.735 6.073C7.735 5.76033 7.66967 5.46867 7.539 5.198C7.40833 4.92267 7.217 4.70333 6.965 4.54C6.713 4.372 6.405 4.288 6.041 4.288C5.69567 4.288 5.383 4.372 5.103 4.54C4.823 4.70333 4.599 4.925 4.431 5.205C4.263 5.485 4.179 5.79767 4.179 6.143C4.179 6.493 4.263 6.808 4.431 7.088C4.60367 7.368 4.83 7.592 5.11 7.76C5.39467 7.928 5.705 8.012 6.041 8.012Z" fill="black"/>
 						</svg>

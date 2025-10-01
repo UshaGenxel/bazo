@@ -4,6 +4,7 @@
  * This file is responsible for the initial rendering for better SEO.
  */
 
+$is_logged_in = is_user_logged_in();
 $posts_to_show = $attributes['postsToShow'] ?? 9;
 $selected_categories = $attributes['selectedCategories'] ?? []; // This now contains term_ids (numbers)
 $show_load_more_button = $attributes['showLoadMoreButton'] ?? true;
@@ -65,13 +66,14 @@ ob_start();
 ]); ?>>
     <div class="bazo-event-filters-wrapper">
         <button class="bazo-event-filter-icon-button">
-            <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_4_2590)">
-                <path d="M10.7516 25C10.3526 25 9.94338 24.8775 9.60579 24.6426C9.05336 24.2647 8.71576 23.6418 8.71576 22.9677V15.4412C8.71576 14.7774 8.52139 14.1442 8.14287 13.6029L0.234941 2.11397C-0.0515045 1.69526 -0.0821951 1.16422 0.153099 0.714869C0.398623 0.275735 0.879442 0.0306373 1.36026 0L22.6493 0.132761C23.1505 0.132761 23.6007 0.408497 23.836 0.847631C24.0713 1.28676 24.0406 1.81781 23.7644 2.22631L16.0713 13.7868C15.8155 14.1748 15.6825 14.6242 15.6723 15.0837L15.6314 21.8546C15.6314 22.692 15.1199 23.4273 14.3424 23.7337L11.4779 24.8468C11.2426 24.9387 10.9869 24.9898 10.7413 24.9898L10.7516 25ZM1.69786 1.53186L9.41141 12.7349C9.96384 13.5315 10.2503 14.471 10.2503 15.4412V22.9677C10.2503 23.2026 10.4037 23.3354 10.4651 23.3762C10.5265 23.4171 10.7106 23.509 10.9255 23.4273L13.7797 22.3141C13.9741 22.2426 14.0968 22.0588 14.1378 15.0837C14.1378 14.3178 14.373 13.5825 14.7925 12.9493L22.3014 1.66462L1.69786 1.53186Z" fill="#8D8D8E"/>
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1.35" y="1.35" width="41.2971" height="41.2971" rx="20.6485" fill="white" stroke="#8D8D8E" stroke-width="1.3"/>
+                <g clip-path="url(#clip0_4_2588)">
+                <path d="M20.7516 35C20.3526 35 19.9434 34.8775 19.6058 34.6426C19.0534 34.2647 18.7158 33.6418 18.7158 32.9677V25.4412C18.7158 24.7774 18.5214 24.1442 18.1429 23.6029L10.2349 12.114C9.9485 11.6953 9.9178 11.1642 10.1531 10.7149C10.3986 10.2757 10.8794 10.0306 11.3603 10L32.6493 10.1328C33.1505 10.1328 33.6007 10.4085 33.836 10.8476C34.0713 11.2868 34.0406 11.8178 33.7644 12.2263L26.0713 23.7868C25.8155 24.1748 25.6825 24.6242 25.6723 25.0837L25.6314 31.8546C25.6314 32.692 25.1199 33.4273 24.3424 33.7337L21.4779 34.8468C21.2426 34.9387 20.9869 34.9898 20.7413 34.9898L20.7516 35ZM11.6979 11.5319L19.4114 22.7349C19.9638 23.5315 20.2503 24.471 20.2503 25.4412V32.9677C20.2503 33.2026 20.4037 33.3354 20.4651 33.3762C20.5265 33.4171 20.7106 33.509 20.9255 33.4273L23.7797 32.3141C23.9741 32.2426 24.0968 32.0588 24.0968 31.8546L24.1378 25.0837C24.1378 24.3178 24.373 23.5825 24.7925 22.9493L32.3014 11.6646L11.6979 11.5319Z" fill="#8D8D8E"/>
                 </g>
                 <defs>
-                <clipPath id="clip0_4_2590">
-                <rect width="24" height="25" fill="white"/>
+                <clipPath id="clip0_4_2588">
+                <rect width="24" height="25" fill="white" transform="translate(10 10)"/>
                 </clipPath>
                 </defs>
             </svg>
@@ -166,24 +168,31 @@ ob_start();
                                 ?>
                             </p>
                             <h3><?php the_title(); ?></h3>
-                            <?php if ($event_date) : ?>
+                                <?php if ($event_date) : ?>
                                 <p class="bazo-event-card-date"><?php echo esc_html($event_date); ?></p>
-                            <?php endif; ?>
+                                <?php endif; ?>
                             
-                            <?php if ($event_time) : ?>
+                                <?php if ($event_time) : ?>
                                 <p class="bazo-event-card-date"><?php echo esc_html($event_time); ?></p>
-                            <?php endif; ?>
-                            <samp class="bazo-event-card-short-description"><?php
-                                $excerpt = get_the_excerpt();
-                                $trimmed = wp_trim_words($excerpt, 10, '...');
-                                echo esc_html($trimmed);
-                                ?>
-                            </samp>
+                                <?php endif; ?>
+                                <samp class="bazo-event-card-short-description"><?php
+                                    $excerpt = get_the_excerpt();
+                                    $trimmed = wp_trim_words($excerpt, 30, '...');
+                                    echo esc_html($trimmed);
+                                    ?>
+                                </samp>
                         </div>
                     </a>
                     <div class="wishlist-wrap">
-                        <?php
+                        <?php if ( $is_logged_in ) : 
                             echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . get_the_ID() . '"]' );
+                        else :
+                            ?>
+                            <div class="bazo-event-card-wishlist-button tinv-wraper woocommerce tinv-wishlist tinvwl-shortcode-add-to-cart tinvwl-the_content" data-tinvwl_product_id="<?php echo get_the_ID(); ?>">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/wishlist.svg" alt="Wishlist icon" />
+                            </div>
+                        <?php
+                        endif;
                         ?>
                     </div>
                 </div>

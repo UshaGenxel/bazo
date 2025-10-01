@@ -7,14 +7,29 @@
 $posts_to_show = $attributes['postsToShow'] ?? 6;
 $post_type = $attributes['postType'] ?? 'post';
 
-// Arguments for the WP_Query to get the newest posts/products.
+// Get current date for filtering
+$current_date = current_time('Y-m-d');
+
+// Arguments for the WP_Query to get events with end date >= current date
 $args = [
     'post_type'      => $post_type,
     'posts_per_page' => $posts_to_show,
     'post_status'    => 'publish',
-    'orderby'        => 'date',
-    'order'          => 'DESC',
+    'meta_query'     => [
+        [
+            'key'     => 'event_end_date',
+            'value'   => $current_date,
+            'compare' => '>=',
+            'type'    => 'DATE'
+        ]
+    ],
+    'orderby'        => 'meta_value',
+    'meta_key'       => 'event_date',
+    'meta_type'      => 'DATE',
+    'order'          => 'ASC',
 ];
+
+// Removed eventType filtering
 
 $query = new WP_Query($args);
 
@@ -28,7 +43,8 @@ ob_start();
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                $event_date = get_field('event_date', get_the_ID());
+                $event_date = function_exists('get_field') ? get_field('event_date', get_the_ID()) : '';
+                $event_end_date = function_exists('get_field') ? get_field('event_end_date', get_the_ID()) : '';
         ?>
                 <div class="bazo-card">
                     <a href="<?php the_permalink(); ?>">
@@ -51,7 +67,11 @@ ob_start();
                             <h3 class="bazo-title"><?php the_title(); ?></h3>
                             
                             <?php if ($event_date) : ?>
-                                <p class="bazo-date"><?php echo esc_html(date('d.m.Y', strtotime($event_date))); ?></p>
+                                <?php if ($event_date == $event_end_date) : ?>
+                                    <p class="bazo-date"><?php echo esc_html($event_date); ?></p>
+                                <?php else : ?>
+                                    <p class="bazo-date"><?php echo esc_html($event_date); ?> - <?php echo esc_html($event_end_date); ?></p>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </a>

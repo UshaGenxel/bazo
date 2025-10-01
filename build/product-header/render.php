@@ -28,14 +28,30 @@ $prev_product = null;
 $next_product = null;
 
 if (function_exists('wc_get_products')) {
-    // Get all published products
-    $products = wc_get_products(array(
-        'status' => 'publish',
-        'limit' => -1,
-        'orderby' => 'date',
-        'order' => 'ASC',
-        'return' => 'ids'
-    ));
+    // Get current date for filtering
+    $current_date = current_time('Y-m-d');
+    
+    // Get all published events with end date >= current date
+    $args = array(
+        'post_type' => 'product', // Assuming events are stored as products
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            array(
+                'key' => 'event_end_date',
+                'value' => $current_date,
+                'compare' => '>=',
+                'type' => 'DATE'
+            )
+        ),
+        'orderby' => 'meta_value',
+        'meta_key' => 'event_date',
+        'meta_type' => 'DATE',
+        'order' => 'ASC'
+    );
+    
+    $events_query = new WP_Query($args);
+    $products = wp_list_pluck($events_query->posts, 'ID');
     
     $current_index = array_search($post_id, $products);
     
@@ -97,7 +113,16 @@ ob_start();
             
             <?php if ($show_wishlist) : ?>
                 <div class="ti-wishlist-container" >
-                    <?php echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . get_the_ID() . '"]' ); ?>
+                    <?php if ( is_user_logged_in() ) : 
+					echo do_shortcode( '[ti_wishlists_addtowishlist product_id="' . get_the_ID() . '"]' );
+				else :
+					echo '<div class="bazo-event-card-wishlist-button tinv-wraper woocommerce tinv-wishlist tinvwl-shortcode-add-to-cart tinvwl-no-action" data-tinvwl_product_id="' . get_the_ID() . '">
+						<svg width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M1 25.8841C1.00016 25.9068 1.0074 25.9289 1.02084 25.9477C1.03428 25.9666 1.05332 25.9813 1.07562 25.9901C1.09791 25.999 1.12249 26.0015 1.1463 25.9974C1.17012 25.9933 1.19213 25.9828 1.20962 25.9671L3.91738 23.527C6.32778 21.3539 8.73852 19.181 11.1496 17.0085C11.4617 16.7275 11.5464 16.7299 11.8637 17.0176L21.7914 25.9681C21.8089 25.9837 21.8309 25.9942 21.8548 25.9982C21.8786 26.0022 21.9031 25.9995 21.9254 25.9906C21.9476 25.9816 21.9665 25.9668 21.9798 25.9479C21.9931 25.9289 22.0001 25.9068 22 25.8841V4.17814C21.9999 3.3352 21.6418 2.52683 21.0045 1.93082C20.3672 1.33482 19.5029 1 18.6017 1H4.39528C3.49465 1.00063 2.63113 1.33568 1.99448 1.93153C1.35783 2.52737 1.00014 3.33526 1 4.17766V25.8841Z" stroke="#8D8D8E" stroke-width="1.7" stroke-miterlimit="10"/>
+						</svg>
+					</div>';
+				endif;
+                ?>
                 </div>
             <?php endif; ?>
             
@@ -146,10 +171,8 @@ ob_start();
         <div id="shareModal" class="bazo-share-modal modal-container is-hidden">
             <div class="bazo-share-modal-content">
                 <div class="bazo-share-modal-header">
-                    <button onclick="closeShareModal()" title="<?php echo esc_attr__('Close', 'bazo'); ?>">
-                        <svg style="width: 20px; height: 20px; fill: currentColor;" viewBox="0 0 24 24">
-                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                        </svg>
+                    <button class="close-modal" onclick="closeShareModal()" title="<?php echo esc_attr__('Close', 'bazo'); ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6L6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                     <h3><?php echo esc_html__('Share Product', 'bazo'); ?></h3>
                 </div>

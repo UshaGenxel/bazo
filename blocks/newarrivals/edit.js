@@ -21,6 +21,8 @@ export default function Edit({ attributes, setAttributes }) {
             }));
     }, []);
 
+    // Removed event type options
+
     return (
         <>
             <InspectorControls>
@@ -33,6 +35,7 @@ export default function Edit({ attributes, setAttributes }) {
                             setAttributes({ postType: value });
                         }}
                     />
+                    {/* Removed Event Type control */}
                     <RangeControl
                         label={__('Items to show', 'bazo')}
                         value={postsToShow}

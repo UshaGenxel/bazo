@@ -28,10 +28,12 @@ class Bazo_Theme {
 		add_filter( 'wp_theme_editor_filetypes', [ $this, 'extend_theme_editor_filetypes' ] );
 
 		add_filter( 'gettext', [ $this, 'translate_wishlist_text' ], 10, 3 );
-		add_filter( 'tinvwl_wishlist_item_name', [ $this, 'wishlist_item_name' ], 10, 3 );
 
 		add_filter('nav_menu_css_class', [ $this, 'bazo_add_nav_menu_active_classes' ], 10, 3);
 		add_filter('render_block', [ $this, 'bazo_navigation_block_active_classes' ], 10, 2);
+		
+		// Add custom ordering for events in REST API
+		add_filter( 'rest_product_query', [ $this, 'custom_event_ordering' ], 10, 2 );
 	}
 
 	/**
@@ -137,6 +139,36 @@ class Bazo_Theme {
 			'schema' => null,
 		]);
 
+		register_rest_field('product', 'event_end_date', [
+			'get_callback' => function ($post_arr) {
+				return get_field('event_end_date', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
+		register_rest_field('product', 'event_end_time', [
+			'get_callback' => function ($post_arr) {
+				return get_field('event_end_time', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
+		// Expose location address for local type rendering in AJAX
+		register_rest_field('product', 'location_address', [
+			'get_callback' => function ($post_arr) {
+				return get_field('location_address', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
+		// Expose direction URL for local type
+		register_rest_field('product', 'direction', [
+			'get_callback' => function ($post_arr) {
+				return get_field('direction', $post_arr['id']);
+			},
+			'schema' => null,
+		]);
+
 		register_rest_field('product', 'taxonomy_terms', [
 			'get_callback' => function ($post_arr) {
 				$terms = get_the_terms($post_arr['id'], 'product_cat');
@@ -157,8 +189,14 @@ class Bazo_Theme {
 				if ( ! function_exists( 'do_shortcode' ) ) {
 					return '';
 				}
-				// Generate TI Wishlist button with shortcode
-				return do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $object['id'] . '"]' );
+				
+				if ( wp_get_current_user() ) : 
+					return do_shortcode( '[ti_wishlists_addtowishlist product_id="' . $object['id'] . '"]' );
+				else :
+					return '<div class="bazo-event-card-wishlist-button tinv-wraper woocommerce tinv-wishlist tinvwl-shortcode-add-to-cart tinvwl-the_content" data-tinvwl_product_id="' . $object['id'] . '">
+						<img src="'. get_template_directory_uri().'/assets/images/wishlist.svg" alt="Wishlist icon" />
+					</div>';
+				endif;
 			},
 			'schema' => array(
 				'description' => __( 'TI Wishlist button HTML', 'bazo' ),
@@ -169,9 +207,53 @@ class Bazo_Theme {
 
     }
 
+	/**
+	 * Custom ordering for events in REST API
+	 * Orders by: 1) Event date (nearest first), 2) Event time, 3) Title (alphabetical)
+	 * Also filters out past events
+	 */
+	public function custom_event_ordering( $args, $request ) {
+		// Build meta query based on event_type and date
+		$current_date = date('Y-m-d');
+		$event_type = $request->get_param('event_type');
+		$meta_query = [];
+		
+		// Apply date filter only for real events
+		if ( $event_type === 'event' ) {
+			$meta_query[] = [
+				'key' => 'event_end_date',
+				'value' => $current_date,
+				'compare' => '>=',
+				'type' => 'DATE',
+			];
+		}
+		
+		// Apply ACF event_types radio if provided
+		if ( $event_type === 'event' || $event_type === 'local' ) {
+			$meta_query[] = [
+				'key' => 'event_types',
+				'value' => $event_type,
+				'compare' => '=',
+			];
+		}
+		
+		if ( ! empty( $meta_query ) ) {
+			$args['meta_query'] = $meta_query;
+		}
+		
+		// Use simple ordering by event date
+		$args['orderby'] = 'meta_value';
+		$args['meta_key'] = 'event_date';
+		$args['meta_type'] = 'DATE';
+		$args['order'] = 'ASC';
+		
+		return $args;
+	}
+
 	public function enqueue_scripts() {
 		$theme_version 			= time(); //wp_get_theme()->get( 'Version' );
 		wp_enqueue_style( 'main', get_theme_file_uri( '/assets/css/main.css' ), array(), $theme_version, 'all' );
+		wp_enqueue_script( 'main', get_theme_file_uri( '/assets/js/main.js' ), array(), $theme_version, true );
 
 		// wp_enqueue_script( 'google-map', 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY', [], null, true );
     	//wp_enqueue_script( 'acf-map-init', get_theme_file_uri( '/assets/js/acf-map.js'), ['google-map','jquery'], null, true );
@@ -218,33 +300,6 @@ class Bazo_Theme {
 	
         return $translated;
     }
-
-	public function wishlist_item_name(  $item_name, $item, $wishlist ) {
-		if ( isset( $item['product_id'] ) ) {
-			$product = wc_get_product( $item['product_id'] );
-			if ( $product ) {
-				// Get the short description (excerpt) OR use full description
-				$short_desc = $product->get_short_description();
-				if ( ! $short_desc ) {
-					$short_desc = $product->get_description();
-				}
-	
-				if ( $short_desc ) {
-					// Strip HTML and limit to 25 words
-					$plain_text = wp_strip_all_tags( $short_desc );
-					$words = preg_split( '/\s+/', $plain_text );
-					if ( count( $words ) > 25 ) {
-						$trimmed = implode( ' ', array_slice( $words, 0, 25 ) ) . '...';
-					} else {
-						$trimmed = $plain_text;
-					}
-	
-					$item_name .= '<div class="tinvwl-event-description">' . esc_html( $trimmed ) . '</div>';
-				}
-			}
-		}
-		return $item_name;
-	}
 
 
 	/**

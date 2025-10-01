@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showLoaderElement();
             
             // Use the 'taxonomy' variable to build the URL dynamically
-            let url = `/wp-json/wp/v2/${postType}?per_page=${postsToShow}&page=${page}`;
+            let url = `/bazo/wp-json/wp/v2/${postType}?per_page=${postsToShow}&page=${page}`;
             if (selectedCategories.length) {
                 // Use the dynamic taxonomy for the filter parameter
                 url += `&${taxonomy}=${selectedCategories.join(',')}`;
@@ -246,6 +246,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 page = 1; // Reset page to 1 for new filter
                 fetchEvents(true); // Fetch new data and reset grid
             });
+        });
+
+        // Add event delegation for wishlist buttons (works with dynamically added elements)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.bazo-event-card-wishlist-button')) {
+                e.preventDefault(); // prevent default link behavior if it's <a>
+                const loginModal = document.getElementById('open-login-modal');
+                if (loginModal) {
+                    loginModal.click();
+                }
+            }
         });
     });
 });

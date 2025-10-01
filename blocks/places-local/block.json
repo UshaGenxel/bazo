@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bazo/places-local",
+	"version": "0.1.0",
+	"title": "places Local",
+	"category": "theme",
+	"icon": "smiley",
+	"description": "places local",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "bazo",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

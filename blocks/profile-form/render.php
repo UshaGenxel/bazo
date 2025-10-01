@@ -154,7 +154,7 @@ if ($woocommerce_active) {
         </form>
     <?php else : ?>
         <div class="login-prompt">
-            <p>Please <a href="<?php echo esc_url(wp_login_url()); ?>">log in</a> to view your profile.</p>
+            <p>Please <a href="<?php echo esc_url(wp_login_url()); ?>" class="bazo-event-card-wishlist-button">log in</a> to view your profile.</p>
         </div>
     <?php endif; ?>
 </div>
